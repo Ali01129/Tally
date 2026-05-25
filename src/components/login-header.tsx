@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, useWindowDimensions, View } from "react-native";
 
 type Avatar = {
   letter: string;
@@ -7,15 +7,23 @@ type Avatar = {
   marginBottom?: number;
 };
 
-const AVATARS: Avatar[] = [
-  { letter: "M", color: "#D4C5F0", size: 80, marginBottom: 0 },
-  { letter: "J", color: "#B8D4F0", size: 120, marginBottom: 50 },
-  { letter: "S", color: "#F5E6A3", size: 80, marginBottom: 0 },
-  { letter: "P", color: "#F5D0D8", size: 100, marginBottom: 50 },
-  { letter: "T", color: "#E8DCC8", size: 80, marginBottom: 0 },
-];
-
 export function LoginHeader() {
+  const { width, height } = useWindowDimensions();
+
+  const largeSize = width * 0.22;
+  const smallSize = width * 0.16;
+
+  const smallMargin = height * 0.02;
+  const largeMargin = height * 0.06;
+
+  const AVATARS: Avatar[] = [
+    { letter: "M", color: "#D4C5F0", size: smallSize, marginBottom: 0 },
+    { letter: "J", color: "#B8D4F0", size: largeSize, marginBottom: 50 },
+    { letter: "S", color: "#F5E6A3", size: smallSize, marginBottom: 0 },
+    { letter: "P", color: "#F5D0D8", size: largeSize, marginBottom: 50 },
+    { letter: "T", color: "#E8DCC8", size: smallSize, marginBottom: 0 },
+  ];
+
   return (
     <View className="items-start">
       <View className="mb-6 flex-row items-center justify-center">
@@ -34,20 +42,20 @@ export function LoginHeader() {
             }}
             className="items-center justify-center rounded-full"
           >
-            <Text className="text-4xl font-bold text-tally-text">
+            <Text className="text-3xl font-bold text-tally-text">
               {avatar.letter}
             </Text>
           </View>
         ))}
       </View>
 
-      <Text className="text-8xl font-bold text-tally-text">Tally.</Text>
+      <Text className="text-5xl font-bold text-tally-text">Tally.</Text>
       <View className="my-4 items-start">
-        <Text className="text-3xl text-tally-textSecondary">
+        <Text className="text-2xl text-tally-textSecondary">
           Split expenses with friends.
         </Text>
 
-        <Text className="text-3xl text-tally-textSecondary">
+        <Text className="text-2xl text-tally-textSecondary">
           Settle up, stay friends.
         </Text>
       </View>

@@ -20,7 +20,7 @@ export default function LoginScreen() {
 
           <View className="gap-4">
             <Input
-              icon={<Feather name="mail" size={20} color="#9CA3AF" />}
+              icon={<Feather name="mail" size={20} color="#000000" />}
               placeholder="maya@tally.app"
               keyboardType="email-address"
               autoCapitalize="none"

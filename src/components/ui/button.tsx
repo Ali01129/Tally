@@ -25,18 +25,18 @@ export function Button({
     <Pressable
       onPress={onPress}
       style={{ backgroundColor }}
-      className={`rounded-2xl px-4 py-6 active:opacity-90 ${className}`}
+      className={`rounded-2xl px-4 py-4 active:opacity-90 ${className}`}
     >
       {hasLeftIcon ? (
         <View className="relative flex-row items-center justify-center">
           <View className="mr-2">{icon}</View>
-          <Text style={{ color: textColor }} className="text-xl font-semibold">
+          <Text style={{ color: textColor }} className="text-l font-semibold">
             {text}
           </Text>
         </View>
       ) : (
         <View className="flex-row items-center justify-center">
-          <Text style={{ color: textColor }} className="text-xl font-semibold">
+          <Text style={{ color: textColor }} className="text-l font-semibold">
             {text}
           </Text>
           {icon && iconPosition === "right" ? (

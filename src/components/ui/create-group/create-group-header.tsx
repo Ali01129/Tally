@@ -6,6 +6,7 @@ type CreateGroupHeaderProps = {
   onCancel?: () => void;
   onCreate?: () => void;
   createDisabled?: boolean;
+  actionLabel?: string;
 };
 
 export function CreateGroupHeader({
@@ -13,13 +14,11 @@ export function CreateGroupHeader({
   onCancel,
   onCreate,
   createDisabled = false,
+  actionLabel = "Create",
 }: CreateGroupHeaderProps) {
   return (
     <View className="flex-row items-center">
-      <Pressable
-        onPress={onCancel ?? (() => router.back())}
-        className="w-20"
-      >
+      <Pressable onPress={onCancel ?? (() => router.back())} className="w-20">
         <Text className="text-sm font-semibold text-tally-textSecondary">
           Cancel
         </Text>
@@ -34,9 +33,12 @@ export function CreateGroupHeader({
         disabled={createDisabled}
         className={`w-20 items-end ${createDisabled ? "opacity-40" : ""}`}
       >
-        <Text className="text-sm font-semibold text-[#3273AE]">Create</Text>
+        <View className={"rounded-full bg-tally-primary px-3 py-1.5"}>
+          <Text className="text-sm font-semibold text-white">
+            {actionLabel}
+          </Text>
+        </View>
       </Pressable>
     </View>
   );
 }
-

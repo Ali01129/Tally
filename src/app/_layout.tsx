@@ -13,6 +13,7 @@ export default function RootLayout() {
       <AnimatedSplashOverlay />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="login" />
+        <Stack.Screen name="create-group" />
         <Stack.Screen name="(tabs)" />
       </Stack>
     </>

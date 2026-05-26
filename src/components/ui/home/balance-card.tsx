@@ -31,7 +31,9 @@ export function BalanceCard({
 
       <View className="flex-row">
         <View className="flex-1 pr-4">
-          <Text className="text-sm text-tally-textOnPrimary">You're owed</Text>
+          <Text className="text-sm text-tally-textOnPrimary">
+            You&apos;re owed
+          </Text>
           <Text className="mt-1 text-2xl font-bold text-tally-green">
             {owedAmount}
           </Text>

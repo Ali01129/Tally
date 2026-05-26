@@ -1,5 +1,6 @@
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 import { BalanceCard } from "@/components/ui/home/balance-card";
 import { HomeActionButtons } from "@/components/ui/home/home-action-buttons";
@@ -63,7 +64,9 @@ export default function HomeScreen() {
             owedAmount="$316.90"
             oweAmount="$32.40"
           />
-          <HomeActionButtons />
+          <HomeActionButtons
+            onNewGroup={() => router.push("/create-group")}
+          />
           <HomeGroups groups={GROUPS} />
         </View>
       </SafeAreaView>

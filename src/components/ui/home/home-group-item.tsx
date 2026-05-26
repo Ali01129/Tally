@@ -50,9 +50,9 @@ export function HomeGroupItem({ group, isLast = false }: HomeGroupItemProps) {
         !isLast ? "border-b border-black/5" : ""
       }`}
     >
-      <View className="relative h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-tally-groupBg">
-        <View className="absolute right-3 top-3 h-10 w-10 translate-x-1/2 -translate-y-1/2 rounded-full bg-tally-groupCircles" />
-        <View className="absolute bottom-2 left-2 h-7 w-7 -translate-x-1/2 translate-y-1/2 rounded-full bg-tally-groupCircles" />
+      <View className="relative h-[12vw] w-[12vw] items-center justify-center overflow-hidden rounded-2xl bg-tally-groupBg">
+        <View className="absolute right-3 top-3 h-[10vw] w-[10vw] translate-x-1/2 -translate-y-1/2 rounded-full bg-tally-groupCircles" />
+        <View className="absolute bottom-2 left-2 h-[7vw] w-[7vw] -translate-x-1/2 translate-y-1/2 rounded-full bg-tally-groupCircles" />
         <Text className="text-sm font-bold text-tally-text">{initials}</Text>
       </View>
 
@@ -70,9 +70,9 @@ export function HomeGroupItem({ group, isLast = false }: HomeGroupItemProps) {
                 marginLeft: index > 0 ? -8 : 0,
                 zIndex: participants.length - index,
               }}
-              className="h-6 w-6 items-center justify-center rounded-full border border-tally-groupBg"
+              className="h-[6vw] w-[6vw] items-center justify-center rounded-full border border-tally-groupBg"
             >
-              <Text className="text-[10px] font-semibold text-tally-text">
+              <Text className="text-sm font-semibold text-tally-text">
                 {participant}
               </Text>
             </View>

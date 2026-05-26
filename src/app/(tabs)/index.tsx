@@ -1,14 +1,14 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { BalanceCard } from "@/components/ui/home/balance-card";
 import { HomeActionButtons } from "@/components/ui/home/home-action-buttons";
 import { HomeGreeting } from "@/components/ui/home/home-greeting";
-import { HomeHeader } from "@/components/ui/home/home-header";
 import {
   HomeGroups,
   type HomeGroupItemData,
 } from "@/components/ui/home/home-groups";
+import { HomeHeader } from "@/components/ui/home/home-header";
 
 const GROUPS: HomeGroupItemData[] = [
   {
@@ -50,7 +50,10 @@ const GROUPS: HomeGroupItemData[] = [
 
 export default function HomeScreen() {
   return (
-    <View className="flex-1 bg-tally-background">
+    <ScrollView
+      className="flex-1 bg-tally-background"
+      showsVerticalScrollIndicator={false}
+    >
       <SafeAreaView className="flex-1 px-6">
         <View className="gap-4 pt-2">
           <HomeHeader userInitial="M" />
@@ -64,6 +67,6 @@ export default function HomeScreen() {
           <HomeGroups groups={GROUPS} />
         </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   );
 }

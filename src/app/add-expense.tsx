@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AmountInput } from "@/components/ui/add-expense/amount-input";
 import { ExpenseDetailsCard } from "@/components/ui/add-expense/expense-details-card";
 import { GroupSelector } from "@/components/ui/add-expense/group-selector";
+import { SplitSelector } from "@/components/ui/add-expense/split-selector";
 import { CreateGroupHeader } from "@/components/ui/create-group/create-group-header";
 
 export default function AddExpenseScreen() {
@@ -31,6 +32,8 @@ export default function AddExpenseScreen() {
             paidByLabel="You"
             dateLabel="Today, May 24"
           />
+
+          <SplitSelector />
         </View>
       </SafeAreaView>
     </ScrollView>

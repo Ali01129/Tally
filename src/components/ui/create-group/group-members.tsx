@@ -124,9 +124,9 @@ export function GroupMembers({
             </View>
             <Pressable
               onPress={() => onRemoveMember?.(member.id)}
-              className="h-8 w-8 items-center justify-center rounded-full bg-tally-background active:opacity-80"
+              className="h-8 w-8 items-center justify-center rounded-full bg-tally-primary active:opacity-80"
             >
-              <Feather name="x" size={16} color="#808080" />
+              <Feather name="x" size={16} color="#ffffff" />
             </Pressable>
           </MemberRow>
         ))}

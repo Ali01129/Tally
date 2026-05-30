@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
-type SplitMethod = "equal" | "exact" | "percent" | "by-items";
+export type SplitMethod = "equal" | "exact" | "percent" | "by-items";
 
 const SPLIT_OPTIONS: { value: SplitMethod; label: string }[] = [
   { value: "equal", label: "Equal" },
@@ -10,9 +9,12 @@ const SPLIT_OPTIONS: { value: SplitMethod; label: string }[] = [
   { value: "by-items", label: "By items" },
 ];
 
-export function SplitSelector() {
-  const [selected, setSelected] = useState<SplitMethod>("equal");
+type SplitSelectorProps = {
+  value: SplitMethod;
+  onChange: (value: SplitMethod) => void;
+};
 
+export function SplitSelector({ value, onChange }: SplitSelectorProps) {
   return (
     <View className="mt-2 gap-2">
       <Text className="text-xs font-semibold tracking-wider text-tally-textSecondary">
@@ -21,12 +23,12 @@ export function SplitSelector() {
 
       <View className="flex-row rounded-xl bg-[#ffffff] p-1">
         {SPLIT_OPTIONS.map((option) => {
-          const isSelected = selected === option.value;
+          const isSelected = value === option.value;
 
           return (
             <Pressable
               key={option.value}
-              onPress={() => setSelected(option.value)}
+              onPress={() => onChange(option.value)}
               className={`flex-1 items-center justify-center rounded-xl py-2.5 ${
                 isSelected ? "bg-tally-primary" : ""
               }`}

@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AmountInput } from "@/components/ui/add-expense/amount-input";
+import { ExpenseAttachmentButtons } from "@/components/ui/add-expense/expense-attachment-buttons";
 import { ExpenseDetailsCard } from "@/components/ui/add-expense/expense-details-card";
 import { GroupSelector } from "@/components/ui/add-expense/group-selector";
+import { SplitAssignmentStatus } from "@/components/ui/add-expense/split-assignment-status";
 import {
   SplitMembersList,
   type SplitMember,
 } from "@/components/ui/add-expense/split-members-list";
+import { useAddExpenseStore } from "@/stores/add-expense-store";
 import {
   SplitSelector,
   type SplitMethod,
@@ -26,6 +29,19 @@ export default function AddExpenseScreen() {
   const [amount, setAmount] = useState("0.00");
   const [description, setDescription] = useState("");
   const [splitMethod, setSplitMethod] = useState<SplitMethod>("equal");
+  const setTotalAmount = useAddExpenseStore((state) => state.setTotalAmount);
+  const resetAddExpenseStore = useAddExpenseStore((state) => state.reset);
+
+  useEffect(() => {
+    const parsed = Number.parseFloat(amount);
+    setTotalAmount(Number.isNaN(parsed) ? 0 : parsed);
+  }, [amount, setTotalAmount]);
+
+  useEffect(() => {
+    return () => {
+      resetAddExpenseStore();
+    };
+  }, [resetAddExpenseStore]);
 
   return (
     <ScrollView
@@ -55,6 +71,10 @@ export default function AddExpenseScreen() {
             totalAmount={amount}
             members={GROUP_MEMBERS}
           />
+
+          <SplitAssignmentStatus />
+
+          <ExpenseAttachmentButtons />
         </View>
       </SafeAreaView>
     </ScrollView>

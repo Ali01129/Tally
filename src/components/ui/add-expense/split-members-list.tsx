@@ -4,6 +4,8 @@ import { Pressable, Text, TextInput, View } from "react-native";
 
 import type { SplitMethod } from "@/components/ui/add-expense/split-selector";
 import { Avatar } from "@/components/ui/avatar";
+import { computeAssignedAmount } from "@/lib/compute-assigned-amount";
+import { useAddExpenseStore } from "@/stores/add-expense-store";
 
 const MEMBER_AVATAR_COLORS = ["#D4C5F0", "#C5D8F0", "#F0C5D8", "#F0E8C5"];
 
@@ -324,7 +326,7 @@ function ItemRow({
   onUpdateIncludedMemberIds: (includedMemberIds: string[]) => void;
   onRemove: () => void;
 }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const includedMemberIds = useMemo(
     () => new Set(item.includedMemberIds),
     [item.includedMemberIds],
@@ -366,7 +368,9 @@ function ItemRow({
         accessibilityState={{ expanded: isExpanded }}
       >
         <View className="min-w-0 flex-1">
-          <Text className="text-base font-bold text-tally-text">{item.name}</Text>
+          <Text className="text-base font-bold text-tally-text">
+            {item.name}
+          </Text>
           <Text className="text-sm text-tally-textSecondary">
             split {memberCount} ways · {formatCurrency(perPerson)} each
           </Text>
@@ -387,53 +391,53 @@ function ItemRow({
 
       {isExpanded ? (
         <>
-          <View className="mx-4 mb-3 overflow-hidden rounded-xl bg-white">
-          <ItemSelectionRow
-            label="Everyone"
-            leading={
-              <View className="h-10 w-10 items-center justify-center rounded-full bg-tally-background">
-                <Feather name="users" size={18} color="#808080" />
-              </View>
-            }
-            included={everyoneSelected}
-            onToggle={toggleEveryone}
-          />
-
-          {members.map((member, index) => (
+          <View className="mx-4 overflow-hidden rounded-xl bg-white">
             <ItemSelectionRow
-              key={member.id}
-              label={member.name}
+              label="Everyone"
               leading={
-                <Avatar
-                  initial={member.initial}
-                  backgroundColor={
-                    member.avatarColor ??
-                    MEMBER_AVATAR_COLORS[index % MEMBER_AVATAR_COLORS.length]
-                  }
-                  size={40}
-                />
+                <View className="h-10 w-10 items-center justify-center rounded-full bg-tally-background">
+                  <Feather name="users" size={18} color="#808080" />
+                </View>
               }
-              included={includedMemberIds.has(member.id)}
-              onToggle={() => toggleMember(member.id)}
-              isLast={index === members.length - 1}
+              included={everyoneSelected}
+              onToggle={toggleEveryone}
             />
-          ))}
-        </View>
 
-        <Pressable
-          onPress={onRemove}
-          className="flex-row items-center justify-center gap-2 py-3.5 active:opacity-80"
-          accessibilityRole="button"
-          accessibilityLabel="Remove item"
-        >
-          <Feather name="trash-2" size={18} color={REMOVE_ITEM_COLOR} />
-          <Text
-            className="text-sm font-semibold"
-            style={{ color: REMOVE_ITEM_COLOR }}
+            {members.map((member, index) => (
+              <ItemSelectionRow
+                key={member.id}
+                label={member.name}
+                leading={
+                  <Avatar
+                    initial={member.initial}
+                    backgroundColor={
+                      member.avatarColor ??
+                      MEMBER_AVATAR_COLORS[index % MEMBER_AVATAR_COLORS.length]
+                    }
+                    size={40}
+                  />
+                }
+                included={includedMemberIds.has(member.id)}
+                onToggle={() => toggleMember(member.id)}
+                isLast={index === members.length - 1}
+              />
+            ))}
+          </View>
+
+          <Pressable
+            onPress={onRemove}
+            className="flex-row items-center justify-center gap-2 py-6 active:opacity-80"
+            accessibilityRole="button"
+            accessibilityLabel="Remove item"
           >
-            Remove item
-          </Text>
-        </Pressable>
+            <Feather name="trash-2" size={18} color={REMOVE_ITEM_COLOR} />
+            <Text
+              className="text-sm font-semibold"
+              style={{ color: REMOVE_ITEM_COLOR }}
+            >
+              Remove item
+            </Text>
+          </Pressable>
         </>
       ) : null}
     </View>
@@ -661,6 +665,8 @@ export function SplitMembersList({
 
   const [isAddingItem, setIsAddingItem] = useState(false);
   const [items, setItems] = useState<ExpenseItem[]>([]);
+  const setAssignedAmount = useAddExpenseStore((state) => state.setAssignedAmount);
+  const memberIds = useMemo(() => members.map((member) => member.id), [members]);
 
   useEffect(() => {
     if (splitMethod !== "by-items") {
@@ -668,6 +674,28 @@ export function SplitMembersList({
       setIsAddingItem(false);
     }
   }, [splitMethod]);
+
+  useEffect(() => {
+    const assigned = computeAssignedAmount({
+      splitMethod,
+      totalAmount: maxAmount,
+      includedMemberIds,
+      memberIds,
+      exactAmounts,
+      percentAmounts,
+      itemAmounts: items.map((item) => item.amount),
+    });
+    setAssignedAmount(assigned);
+  }, [
+    splitMethod,
+    maxAmount,
+    includedMemberIds,
+    memberIds,
+    exactAmounts,
+    percentAmounts,
+    items,
+    setAssignedAmount,
+  ]);
 
   if (splitMethod === "by-items") {
     return (

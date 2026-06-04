@@ -30,6 +30,9 @@ export function SplitAssignmentStatus() {
   } else if (assigned > total) {
     statusLabel = `${formatCurrency(difference)} over`;
     statusColor = OVER_RED;
+  } else if (assigned < total) {
+    statusLabel = `${formatCurrency(difference)} left`;
+    statusColor = OVER_RED;
   } else {
     statusLabel = `${formatCurrency(difference)} left`;
     statusColor = "#808080";

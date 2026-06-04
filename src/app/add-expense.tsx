@@ -11,12 +11,12 @@ import {
   SplitMembersList,
   type SplitMember,
 } from "@/components/ui/add-expense/split-members-list";
-import { useAddExpenseStore } from "@/stores/add-expense-store";
 import {
   SplitSelector,
   type SplitMethod,
 } from "@/components/ui/add-expense/split-selector";
 import { CreateGroupHeader } from "@/components/ui/create-group/create-group-header";
+import { useAddExpenseStore } from "@/stores/add-expense-store";
 
 const GROUP_MEMBERS: SplitMember[] = [
   { id: "you", name: "You", initial: "M", avatarColor: "#D4C5F0" },
@@ -49,7 +49,7 @@ export default function AddExpenseScreen() {
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
-      <SafeAreaView className="flex-1 px-6">
+      <SafeAreaView className="flex-1 px-6 mb-10">
         <View className="flex-1 gap-2 pt-2">
           <CreateGroupHeader title="Add expense" actionLabel="Save" />
 

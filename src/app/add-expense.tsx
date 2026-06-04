@@ -26,7 +26,7 @@ const GROUP_MEMBERS: SplitMember[] = [
 ];
 
 export default function AddExpenseScreen() {
-  const [amount, setAmount] = useState("0.00");
+  const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [splitMethod, setSplitMethod] = useState<SplitMethod>("equal");
   const setTotalAmount = useAddExpenseStore((state) => state.setTotalAmount);

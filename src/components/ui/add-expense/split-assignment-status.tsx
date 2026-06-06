@@ -27,15 +27,15 @@ export function SplitAssignmentStatus() {
   if (difference === 0) {
     statusLabel = "Balanced";
     statusColor = BALANCED_GREEN;
-  } else if (assigned > total) {
+  } else if (assigned > total && difference > 0.9) {
     statusLabel = `${formatCurrency(difference)} over`;
     statusColor = OVER_RED;
-  } else if (assigned < total) {
+  } else if (assigned < total && difference > 0.9) {
     statusLabel = `${formatCurrency(difference)} left`;
     statusColor = OVER_RED;
   } else {
-    statusLabel = `${formatCurrency(difference)} left`;
-    statusColor = "#808080";
+    statusLabel = "Balanced";
+    statusColor = BALANCED_GREEN;
   }
 
   return (

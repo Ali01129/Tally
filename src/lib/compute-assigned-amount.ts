@@ -1,4 +1,8 @@
 import type { SplitMethod } from "@/components/ui/add-expense/split-selector";
+import {
+  resolveExactShare,
+  resolvePercentShare,
+} from "@/components/ui/add-expense/split-member/utils";
 
 type ComputeAssignedAmountParams = {
   splitMethod: SplitMethod;
@@ -23,23 +27,31 @@ export function computeAssignedAmount({
     return includedMemberIds.size > 0 ? totalAmount : 0;
   }
 
+  const includedCount = memberIds.filter((id) =>
+    includedMemberIds.has(id),
+  ).length;
+
   if (splitMethod === "exact") {
     return memberIds
       .filter((id) => includedMemberIds.has(id))
-      .reduce((sum, id) => {
-        const parsed = Number.parseFloat(exactAmounts[id] ?? "");
-        return sum + (Number.isNaN(parsed) ? 0 : parsed);
-      }, 0);
+      .reduce(
+        (sum, id) =>
+          sum +
+          resolveExactShare(exactAmounts[id] ?? "", includedCount, totalAmount),
+        0,
+      );
   }
 
   if (splitMethod === "percent") {
     return memberIds
       .filter((id) => includedMemberIds.has(id))
-      .reduce((sum, id) => {
-        const parsed = Number.parseInt(percentAmounts[id] ?? "", 10);
-        const percent = Number.isNaN(parsed) ? 0 : parsed;
-        return sum + (percent / 100) * totalAmount;
-      }, 0);
+      .reduce(
+        (sum, id) =>
+          sum +
+          (resolvePercentShare(percentAmounts[id] ?? "", includedCount) / 100) *
+            totalAmount,
+        0,
+      );
   }
 
   return itemAmounts.reduce((sum, amount) => sum + amount, 0);

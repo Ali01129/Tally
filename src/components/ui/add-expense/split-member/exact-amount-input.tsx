@@ -4,6 +4,7 @@ import { clampDecimalInput, sanitizeDecimalInput } from "./utils";
 
 type ExactAmountInputProps = {
   value: string;
+  placeholder: string;
   maxAmount: number;
   onChange: (value: string) => void;
   disabled?: boolean;
@@ -11,6 +12,7 @@ type ExactAmountInputProps = {
 
 export function ExactAmountInput({
   value,
+  placeholder,
   maxAmount,
   onChange,
   disabled,
@@ -29,7 +31,7 @@ export function ExactAmountInput({
           onChange(clampDecimalInput(sanitizeDecimalInput(text), maxAmount));
         }}
         keyboardType="decimal-pad"
-        placeholder="0.00"
+        placeholder={placeholder}
         placeholderTextColor="#808080"
         className="min-w-[56px] p-0 text-right text-sm font-semibold text-tally-text"
       />

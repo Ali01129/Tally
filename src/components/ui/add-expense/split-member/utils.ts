@@ -1,7 +1,5 @@
 import type { SplitMethod } from "@/components/ui/add-expense/split-selector";
 
-import type { SplitMember } from "./types";
-
 export function sanitizeDecimalInput(text: string): string {
   const cleaned = text.replace(/[^0-9.]/g, "");
   const [whole, ...rest] = cleaned.split(".");
@@ -69,36 +67,46 @@ export function formatCurrency(amount: number): string {
   return `$${amount.toFixed(2)}`;
 }
 
-export function redistributeSplitAmounts(
-  members: SplitMember[],
-  includedMemberIds: Set<string>,
+export function getDefaultExactShare(
+  includedCount: number,
   totalAmount: number,
-): {
-  exactAmounts: Record<string, string>;
-  percentAmounts: Record<string, string>;
-} {
-  const includedCount = members.filter((member) =>
-    includedMemberIds.has(member.id),
-  ).length;
-  const share =
-    includedCount > 0 ? (totalAmount / includedCount).toFixed(2) : "0.00";
-  const percent =
-    includedCount > 0 ? String(Math.floor(100 / includedCount)) : "0";
+): string {
+  return includedCount > 0
+    ? (totalAmount / includedCount).toFixed(2)
+    : "0.00";
+}
 
-  return {
-    exactAmounts: Object.fromEntries(
-      members.map((member) => [
-        member.id,
-        includedMemberIds.has(member.id) ? share : "",
-      ]),
-    ),
-    percentAmounts: Object.fromEntries(
-      members.map((member) => [
-        member.id,
-        includedMemberIds.has(member.id) ? percent : "",
-      ]),
-    ),
-  };
+export function getDefaultPercentShare(includedCount: number): string {
+  return includedCount > 0 ? String(Math.floor(100 / includedCount)) : "0";
+}
+
+export function resolveExactShare(
+  value: string,
+  includedCount: number,
+  totalAmount: number,
+): number {
+  if (value) {
+    const parsed = Number.parseFloat(value);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  const parsed = Number.parseFloat(
+    getDefaultExactShare(includedCount, totalAmount),
+  );
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+export function resolvePercentShare(
+  value: string,
+  includedCount: number,
+): number {
+  if (value) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  const parsed = Number.parseInt(getDefaultPercentShare(includedCount), 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
 }
 
 export function getMemberShareLabel(
@@ -122,14 +130,12 @@ export function getMemberShareLabel(
   }
 
   if (splitMethod === "exact") {
-    const parsed = Number.parseFloat(exactValue);
-    const amount = Number.isNaN(parsed) ? 0 : parsed;
+    const amount = resolveExactShare(exactValue, includedCount, totalAmount);
     return `${formatCurrency(amount)} per person`;
   }
 
   if (splitMethod === "percent") {
-    const parsed = Number.parseInt(percentValue, 10);
-    const percent = Number.isNaN(parsed) ? 0 : parsed;
+    const percent = resolvePercentShare(percentValue, includedCount);
     return `${formatCurrency((percent / 100) * totalAmount)} per person`;
   }
 

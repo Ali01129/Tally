@@ -4,7 +4,6 @@ import { View } from "react-native";
 import { computeAssignedAmount } from "@/lib/compute-assigned-amount";
 import { useAddExpenseStore } from "@/stores/add-expense-store";
 
-import { redistributeSplitAmounts } from "./utils";
 import type { ExpenseItem, SplitMember, SplitMembersListProps } from "./types";
 
 export function useSplitMembersState({
@@ -38,16 +37,6 @@ export function useSplitMembersState({
   useEffect(() => {
     setIncludedMemberIds(new Set(members.map((member) => member.id)));
   }, [members]);
-
-  useEffect(() => {
-    const {
-      exactAmounts: nextExactAmounts,
-      percentAmounts: nextPercentAmounts,
-    } = redistributeSplitAmounts(members, includedMemberIds, maxAmount);
-
-    setExactAmounts(nextExactAmounts);
-    setPercentAmounts(nextPercentAmounts);
-  }, [members, maxAmount, includedMemberIds]);
 
   useEffect(() => {
     if (splitMethod !== "by-items") {

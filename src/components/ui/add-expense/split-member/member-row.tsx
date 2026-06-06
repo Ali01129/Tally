@@ -16,6 +16,8 @@ type MemberRowProps = {
   shareLabel: string;
   exactValue: string;
   percentValue: string;
+  exactPlaceholder: string;
+  percentPlaceholder: string;
   maxAmount: number;
   isIncluded: boolean;
   onToggleIncluded: () => void;
@@ -31,6 +33,8 @@ export function MemberRow({
   shareLabel,
   exactValue,
   percentValue,
+  exactPlaceholder,
+  percentPlaceholder,
   maxAmount,
   isIncluded,
   onToggleIncluded,
@@ -78,6 +82,7 @@ export function MemberRow({
         <>
           <ExactAmountInput
             value={exactValue}
+            placeholder={exactPlaceholder}
             maxAmount={maxAmount}
             onChange={onExactChange}
             disabled={!isIncluded}
@@ -89,6 +94,7 @@ export function MemberRow({
         <>
           <PercentAmountInput
             value={percentValue}
+            placeholder={percentPlaceholder}
             onChange={onPercentChange}
             disabled={!isIncluded}
           />

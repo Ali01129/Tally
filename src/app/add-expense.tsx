@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AmountInput } from "@/components/ui/add-expense/amount-input";
@@ -31,6 +32,8 @@ export default function AddExpenseScreen() {
   const [splitMethod, setSplitMethod] = useState<SplitMethod>("equal");
   const setTotalAmount = useAddExpenseStore((state) => state.setTotalAmount);
   const resetAddExpenseStore = useAddExpenseStore((state) => state.reset);
+  const totalAmount = useAddExpenseStore((state) => state.totalAmount);
+  const assignedAmount = useAddExpenseStore((state) => state.assignedAmount);
 
   useEffect(() => {
     const parsed = Number.parseFloat(amount);
@@ -43,40 +46,76 @@ export default function AddExpenseScreen() {
     };
   }, [resetAddExpenseStore]);
 
+  function disableSave(): boolean {
+    const difference = Math.abs(totalAmount - assignedAmount);
+    if (difference > 0.9 || description.length === 0 || totalAmount === 0) {
+      return true;
+    }
+    return false;
+  }
+
+  function getTodayString(): string {
+    const today = new Date();
+
+    const month = today.toLocaleDateString("en-US", {
+      month: "long",
+    });
+
+    const day = today.getDate();
+
+    return `Today, ${month} ${day}`;
+  }
+
   return (
-    <ScrollView
-      className="flex-1 bg-tally-background"
-      showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
-    >
-      <SafeAreaView className="flex-1 px-6 mb-10">
-        <View className="flex-1 gap-2 pt-2">
-          <CreateGroupHeader title="Add expense" actionLabel="Save" />
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <KeyboardAwareScrollView
+          className="bg-tally-background"
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          enableOnAndroid
+          extraScrollHeight={80}
+          contentContainerStyle={{
+            paddingHorizontal: 24,
+            paddingBottom: 40,
+            flexGrow: 1,
+          }}
+        >
+          <View className="flex-1 gap-2 pt-2">
+            <CreateGroupHeader
+              title="Add expense"
+              actionLabel="Save"
+              createDisabled={disableSave()}
+            />
 
-          <GroupSelector groupName="Italy trip" initials="It" />
+            <GroupSelector groupName="Italy trip" initials="It" />
 
-          <AmountInput amount={amount} onChangeAmount={setAmount} />
+            <AmountInput amount={amount} onChangeAmount={setAmount} />
 
-          <ExpenseDetailsCard
-            description={description}
-            onChangeDescription={setDescription}
-            paidByLabel="You"
-            dateLabel="Today, May 24"
-          />
+            <ExpenseDetailsCard
+              description={description}
+              onChangeDescription={setDescription}
+              paidByLabel="You"
+              dateLabel={getTodayString()}
+            />
 
-          <SplitSelector value={splitMethod} onChange={setSplitMethod} />
+            <SplitSelector value={splitMethod} onChange={setSplitMethod} />
 
-          <SplitMembersList
-            splitMethod={splitMethod}
-            totalAmount={amount}
-            members={GROUP_MEMBERS}
-          />
+            <SplitMembersList
+              splitMethod={splitMethod}
+              totalAmount={amount}
+              members={GROUP_MEMBERS}
+            />
 
-          <SplitAssignmentStatus />
+            <SplitAssignmentStatus />
 
-          <ExpenseAttachmentButtons />
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+            <ExpenseAttachmentButtons />
+          </View>
+        </KeyboardAwareScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

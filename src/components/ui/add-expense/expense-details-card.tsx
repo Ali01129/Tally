@@ -66,7 +66,7 @@ export function ExpenseDetailsCard({
         <TextInput
           value={description}
           onChangeText={onChangeDescription}
-          placeholder="Add description"
+          placeholder="Add description here"
           placeholderTextColor="#808080"
           multiline={false}
           numberOfLines={1}
@@ -75,11 +75,15 @@ export function ExpenseDetailsCard({
       </DetailRow>
 
       <DetailRow icon="account-balance-wallet" label="PAID BY">
-        <Text className="text-md font-semibold leading-6 text-tally-text">{paidByLabel}</Text>
+        <Text className="text-md font-semibold leading-6 text-tally-text">
+          {paidByLabel}
+        </Text>
       </DetailRow>
 
       <DetailRow icon="calendar-today" label="DATE" isLast>
-        <Text className="text-md font-semibold leading-6 text-tally-text">{dateLabel}</Text>
+        <Text className="text-md font-semibold leading-6 text-tally-text">
+          {dateLabel}
+        </Text>
       </DetailRow>
     </View>
   );

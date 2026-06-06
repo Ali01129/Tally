@@ -4,7 +4,11 @@ import type { SplitMethod } from "@/components/ui/add-expense/split-selector";
 
 import { MemberRow } from "./member-row";
 import type { SplitMember } from "./types";
-import { getMemberShareLabel } from "./utils";
+import {
+  getDefaultExactShare,
+  getDefaultPercentShare,
+  getMemberShareLabel,
+} from "./utils";
 
 type MembersSplitListProps = {
   splitMethod: SplitMethod;
@@ -35,14 +39,22 @@ export function MembersSplitList({
     <View className="mt-2 overflow-hidden rounded-2xl bg-white">
       {members.map((member, index) => {
         const isIncluded = includedMemberIds.has(member.id);
+        const exactValue = exactAmounts[member.id] ?? "";
+        const percentValue = percentAmounts[member.id] ?? "";
         const shareLabel = getMemberShareLabel(
           splitMethod,
           isIncluded,
           maxAmount,
           includedCount,
-          exactAmounts[member.id] ?? "",
-          percentAmounts[member.id] ?? "",
+          exactValue,
+          percentValue,
         );
+        const exactPlaceholder = isIncluded
+          ? getDefaultExactShare(includedCount, maxAmount)
+          : "0.00";
+        const percentPlaceholder = isIncluded
+          ? getDefaultPercentShare(includedCount)
+          : "0";
 
         return (
           <MemberRow
@@ -51,8 +63,10 @@ export function MembersSplitList({
             index={index}
             splitMethod={splitMethod}
             shareLabel={shareLabel}
-            exactValue={exactAmounts[member.id] ?? ""}
-            percentValue={percentAmounts[member.id] ?? ""}
+            exactValue={exactValue}
+            percentValue={percentValue}
+            exactPlaceholder={exactPlaceholder}
+            percentPlaceholder={percentPlaceholder}
             maxAmount={maxAmount}
             isIncluded={isIncluded}
             onToggleIncluded={() => onToggleMemberIncluded(member.id)}

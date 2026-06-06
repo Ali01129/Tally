@@ -38,6 +38,7 @@ export function AddItemForm({ maxAmount, onCancel, onAdd }: AddItemFormProps) {
         </View>
         <ExactAmountInput
           value={amount}
+          placeholder="0.00"
           maxAmount={maxAmount}
           onChange={setAmount}
         />

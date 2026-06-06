@@ -12,8 +12,11 @@ export function AmountInput({ amount, onChangeAmount }: AmountInputProps) {
         AMOUNT
       </Text>
 
-      <View className="flex-row items-center justify-center">
-        <Text className="text-6xl font-bold leading-[60px] text-tally-textSecondary">
+      <View className="flex-row items-baseline justify-center">
+        <Text
+          className="text-6xl font-bold text-tally-textSecondary"
+          style={{ includeFontPadding: false }}
+        >
           $
         </Text>
 
@@ -23,8 +26,11 @@ export function AmountInput({ amount, onChangeAmount }: AmountInputProps) {
           keyboardType="decimal-pad"
           placeholder="0.00"
           placeholderTextColor="#808080"
-          className="min-w-[42vw] p-0 text-center text-6xl font-bold leading-[60px] text-tally-text placeholder:text-tally-textSecondary"
-          style={{ includeFontPadding: false, textAlignVertical: "center" }}
+          className="text-6xl font-bold text-tally-text p-0"
+          style={{
+            includeFontPadding: false,
+            lineHeight: 72,
+          }}
         />
       </View>
     </View>

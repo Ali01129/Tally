@@ -70,3 +70,4 @@ Where to look next
 - Group creation: `src/components/ui/create-group`
 
 Enjoy building with Tally!
+Tally

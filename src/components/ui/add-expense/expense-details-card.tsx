@@ -1,6 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import type { ComponentProps, ReactNode } from "react";
-import { Text, TextInput, View } from "react-native";
+import { useState, type ComponentProps, type ReactNode } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
+import {
+  OptionsBottomSheet,
+  type OptionsBottomSheetOption,
+} from "../options-bottom-sheet";
 
 type IconName = ComponentProps<typeof MaterialIcons>["name"];
 
@@ -16,6 +20,9 @@ type ExpenseDetailsCardProps = {
   description: string;
   onChangeDescription: (value: string) => void;
   paidByLabel: string;
+  paidByOptions: OptionsBottomSheetOption[];
+  selectedPaidByValue: string;
+  onSelectPaidBy: (value: string) => void;
   dateLabel: string;
 };
 
@@ -24,16 +31,21 @@ function DetailRow({
   label,
   isLast,
   showChevron = true,
+  onPress,
   children,
 }: {
   icon: IconName;
   label: string;
   isLast?: boolean;
   showChevron?: boolean;
+  onPress?: () => void;
   children?: ReactNode;
 }) {
+  const Container = onPress ? Pressable : View;
+
   return (
-    <View
+    <Container
+      onPress={onPress}
       className={`flex-row items-center gap-3 px-4 py-4 ${
         !isLast ? "border-b border-black/5" : ""
       }`}
@@ -50,7 +62,7 @@ function DetailRow({
           <MaterialIcons name="chevron-right" size={22} color="#808080" />
         ) : null}
       </View>
-    </View>
+    </Container>
   );
 }
 
@@ -58,8 +70,13 @@ export function ExpenseDetailsCard({
   description,
   onChangeDescription,
   paidByLabel,
+  paidByOptions,
+  selectedPaidByValue,
+  onSelectPaidBy,
   dateLabel,
 }: ExpenseDetailsCardProps) {
+  const [isPaidBySheetOpen, setIsPaidBySheetOpen] = useState(false);
+
   return (
     <View className="mt-2 overflow-hidden rounded-2xl bg-white">
       <DetailRow icon="payments" label="DESCRIPTION" showChevron={false}>
@@ -74,11 +91,27 @@ export function ExpenseDetailsCard({
         />
       </DetailRow>
 
-      <DetailRow icon="account-balance-wallet" label="PAID BY">
+      <DetailRow
+        icon="account-balance-wallet"
+        label="PAID BY"
+        onPress={() => setIsPaidBySheetOpen(true)}
+      >
         <Text className="text-md font-semibold leading-6 text-tally-text">
           {paidByLabel}
         </Text>
       </DetailRow>
+
+      <OptionsBottomSheet
+        isPresented={isPaidBySheetOpen}
+        onDismiss={() => setIsPaidBySheetOpen(false)}
+        heading="Who paid?"
+        options={paidByOptions}
+        selectedValue={selectedPaidByValue}
+        onSelect={(value) => {
+          onSelectPaidBy(value);
+          setIsPaidBySheetOpen(false);
+        }}
+      />
 
       <DetailRow icon="calendar-today" label="DATE" isLast>
         <Text className="text-md font-semibold leading-6 text-tally-text">

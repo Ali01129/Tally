@@ -17,7 +17,15 @@ import {
   type SplitMethod,
 } from "@/components/ui/add-expense/split-selector";
 import { CreateGroupHeader } from "@/components/ui/create-group/create-group-header";
+import { OptionsBottomSheet } from "@/components/ui/options-bottom-sheet";
 import { useAddExpenseStore } from "@/stores/add-expense-store";
+
+const GROUPS = [
+  { id: "1", name: "Italy trip", initials: "It" },
+  { id: "2", name: "Roommates", initials: "Ro" },
+  { id: "3", name: "Weekend crew", initials: "We" },
+  { id: "4", name: "Office lunch", initials: "Of" },
+];
 
 const GROUP_MEMBERS: SplitMember[] = [
   { id: "you", name: "You", initial: "M", avatarColor: "#D4C5F0" },
@@ -30,6 +38,14 @@ export default function AddExpenseScreen() {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [splitMethod, setSplitMethod] = useState<SplitMethod>("equal");
+  const [selectedGroupId, setSelectedGroupId] = useState(GROUPS[0].id);
+  const [selectedPaidById, setSelectedPaidById] = useState(GROUP_MEMBERS[0].id);
+  const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
+  const selectedGroup =
+    GROUPS.find((group) => group.id === selectedGroupId) ?? GROUPS[0];
+  const selectedPaidByMember =
+    GROUP_MEMBERS.find((member) => member.id === selectedPaidById) ??
+    GROUP_MEMBERS[0];
   const setTotalAmount = useAddExpenseStore((state) => state.setTotalAmount);
   const resetAddExpenseStore = useAddExpenseStore((state) => state.reset);
   const totalAmount = useAddExpenseStore((state) => state.totalAmount);
@@ -91,14 +107,42 @@ export default function AddExpenseScreen() {
               createDisabled={disableSave()}
             />
 
-            <GroupSelector groupName="Italy trip" initials="It" />
+            <GroupSelector
+              groupName={selectedGroup.name}
+              initials={selectedGroup.initials}
+              onPress={() => setIsGroupSheetOpen(true)}
+            />
+
+            <OptionsBottomSheet
+              isPresented={isGroupSheetOpen}
+              onDismiss={() => setIsGroupSheetOpen(false)}
+              heading="Choose groups"
+              options={GROUPS.map((group) => ({
+                value: group.id,
+                label: group.name,
+                avatarInitial: group.initials,
+              }))}
+              selectedValue={selectedGroupId}
+              onSelect={(value) => {
+                setSelectedGroupId(value);
+                setIsGroupSheetOpen(false);
+              }}
+            />
 
             <AmountInput amount={amount} onChangeAmount={setAmount} />
 
             <ExpenseDetailsCard
               description={description}
               onChangeDescription={setDescription}
-              paidByLabel="You"
+              paidByLabel={selectedPaidByMember.name}
+              paidByOptions={GROUP_MEMBERS.map((member) => ({
+                value: member.id,
+                label: member.name,
+                avatarInitial: member.initial,
+                avatarBackgroundColor: member.avatarColor,
+              }))}
+              selectedPaidByValue={selectedPaidById}
+              onSelectPaidBy={setSelectedPaidById}
               dateLabel={getTodayString()}
             />
 

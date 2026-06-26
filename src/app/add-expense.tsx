@@ -17,6 +17,7 @@ import {
   type SplitMethod,
 } from "@/components/ui/add-expense/split-selector";
 import { CreateGroupHeader } from "@/components/ui/create-group/create-group-header";
+import { DateBottomSheet } from "@/components/ui/date-bottom-sheet";
 import { OptionsBottomSheet } from "@/components/ui/options-bottom-sheet";
 import { useAddExpenseStore } from "@/stores/add-expense-store";
 
@@ -41,6 +42,8 @@ export default function AddExpenseScreen() {
   const [selectedGroupId, setSelectedGroupId] = useState(GROUPS[0].id);
   const [selectedPaidById, setSelectedPaidById] = useState(GROUP_MEMBERS[0].id);
   const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(() => new Date());
+  const [isDateSheetOpen, setIsDateSheetOpen] = useState(false);
   const selectedGroup =
     GROUPS.find((group) => group.id === selectedGroupId) ?? GROUPS[0];
   const selectedPaidByMember =
@@ -70,16 +73,25 @@ export default function AddExpenseScreen() {
     return false;
   }
 
-  function getTodayString(): string {
+  function formatExpenseDate(date: Date): string {
     const today = new Date();
+    const isToday =
+      today.getFullYear() === date.getFullYear() &&
+      today.getMonth() === date.getMonth() &&
+      today.getDate() === date.getDate();
 
-    const month = today.toLocaleDateString("en-US", {
+    const month = date.toLocaleDateString("en-US", {
       month: "long",
     });
 
-    const day = today.getDate();
+    const day = date.getDate();
+    const year = date.getFullYear();
 
-    return `Today, ${month} ${day}`;
+    if (isToday) {
+      return `Today, ${month} ${day}, ${year}`;
+    }
+
+    return `${month} ${day}, ${year}`;
   }
 
   return (
@@ -143,7 +155,16 @@ export default function AddExpenseScreen() {
               }))}
               selectedPaidByValue={selectedPaidById}
               onSelectPaidBy={setSelectedPaidById}
-              dateLabel={getTodayString()}
+              dateLabel={formatExpenseDate(selectedDate)}
+              onPressDate={() => setIsDateSheetOpen(true)}
+            />
+
+            <DateBottomSheet
+              isPresented={isDateSheetOpen}
+              onDismiss={() => setIsDateSheetOpen(false)}
+              heading="Choose date"
+              selectedDate={selectedDate}
+              onSelect={setSelectedDate}
             />
 
             <SplitSelector value={splitMethod} onChange={setSplitMethod} />

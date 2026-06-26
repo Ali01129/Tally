@@ -24,6 +24,7 @@ type ExpenseDetailsCardProps = {
   selectedPaidByValue: string;
   onSelectPaidBy: (value: string) => void;
   dateLabel: string;
+  onPressDate: () => void;
 };
 
 function DetailRow({
@@ -74,6 +75,7 @@ export function ExpenseDetailsCard({
   selectedPaidByValue,
   onSelectPaidBy,
   dateLabel,
+  onPressDate,
 }: ExpenseDetailsCardProps) {
   const [isPaidBySheetOpen, setIsPaidBySheetOpen] = useState(false);
 
@@ -113,7 +115,12 @@ export function ExpenseDetailsCard({
         }}
       />
 
-      <DetailRow icon="calendar-today" label="DATE" isLast>
+      <DetailRow
+        icon="calendar-today"
+        label="DATE"
+        isLast
+        onPress={onPressDate}
+      >
         <Text className="text-md font-semibold leading-6 text-tally-text">
           {dateLabel}
         </Text>

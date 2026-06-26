@@ -65,6 +65,7 @@ export default function HomeScreen() {
             oweAmount="$32.40"
           />
           <HomeActionButtons
+            onAddExpense={() => router.push("/add-expense")}
             onNewGroup={() => router.push("/create-group")}
           />
           <HomeGroups groups={GROUPS} />

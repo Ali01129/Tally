@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         tally: {
           primary: "#785DC3",
+          primaryLight: "#F5F0FD",
           background: "#F7F5F3",
           groupBg: "#F0E8E2",
           groupCircles: "#E6DFD8",

@@ -1,6 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
 
+import { GroupActivityList } from "@/components/ui/group-details/group-activity-list";
 import { GroupBalanceSummary } from "@/components/ui/group-details/group-balance-summary";
 import { GroupDetailsHeader } from "@/components/ui/group-details/group-details-header";
 import type { GroupDetailsData } from "@/components/ui/group-details/types";
@@ -26,6 +27,44 @@ const GROUP_DETAILS: Record<string, GroupDetailsData> = {
       { memberId: "priya", amount: 86.3, direction: "owes_you" },
       { memberId: "theo", amount: 50.0, direction: "owes_you" },
     ],
+    transactions: [
+      {
+        id: "t1-1",
+        name: "Dinner at Da Mario",
+        paidByMemberId: "jordan",
+        splitCount: 4,
+        totalAmount: 184.2,
+        yourShare: 46.05,
+        date: "2026-06-27",
+      },
+      {
+        id: "t1-2",
+        name: "Train to Florence",
+        paidByMemberId: "maya",
+        splitCount: 4,
+        totalAmount: 186.0,
+        yourShare: 139.5,
+        date: "2026-06-27",
+      },
+      {
+        id: "t1-3",
+        name: "Airbnb — Week 1",
+        paidByMemberId: "priya",
+        splitCount: 4,
+        totalAmount: 480.0,
+        yourShare: 120.0,
+        date: "2026-06-26",
+      },
+      {
+        id: "t1-4",
+        name: "Grocery run",
+        paidByMemberId: "theo",
+        splitCount: 4,
+        totalAmount: 62.4,
+        yourShare: 15.6,
+        date: "2026-05-24",
+      },
+    ],
   },
   "2": {
     id: "2",
@@ -42,6 +81,35 @@ const GROUP_DETAILS: Record<string, GroupDetailsData> = {
       { memberId: "ava", amount: 18.2, direction: "you_owe" },
       { memberId: "sam", amount: 14.2, direction: "you_owe" },
     ],
+    transactions: [
+      {
+        id: "t2-1",
+        name: "Electric bill",
+        paidByMemberId: "ava",
+        splitCount: 3,
+        totalAmount: 94.5,
+        yourShare: 31.5,
+        date: "2026-06-27",
+      },
+      {
+        id: "t2-2",
+        name: "Internet — June",
+        paidByMemberId: "sam",
+        splitCount: 3,
+        totalAmount: 89.97,
+        yourShare: 29.99,
+        date: "2026-06-26",
+      },
+      {
+        id: "t2-3",
+        name: "Cleaning supplies",
+        paidByMemberId: "maya",
+        splitCount: 3,
+        totalAmount: 24.6,
+        yourShare: 16.4,
+        date: "2026-05-12",
+      },
+    ],
   },
   "3": {
     id: "3",
@@ -56,6 +124,7 @@ const GROUP_DETAILS: Record<string, GroupDetailsData> = {
     balanceStatus: "owed",
     totalAmount: 0,
     memberBalances: [],
+    transactions: [],
   },
   "4": {
     id: "4",
@@ -73,6 +142,17 @@ const GROUP_DETAILS: Record<string, GroupDetailsData> = {
       { memberId: "dan", amount: 6.25, direction: "you_owe" },
       { memberId: "emma", amount: 6.25, direction: "you_owe" },
       { memberId: "finn", amount: 6.25, direction: "you_owe" },
+    ],
+    transactions: [
+      {
+        id: "t4-1",
+        name: "Thai lunch",
+        paidByMemberId: "dan",
+        splitCount: 4,
+        totalAmount: 75.0,
+        yourShare: 18.75,
+        date: "2026-06-27",
+      },
     ],
   },
 };
@@ -124,6 +204,13 @@ export default function GroupDetailsScreen() {
           selected={type}
           onChange={setType}
         />
+
+        {type === "Activity" ? (
+          <GroupActivityList
+            transactions={group.transactions}
+            members={group.members}
+          />
+        ) : null}
       </View>
     </ScrollView>
   );

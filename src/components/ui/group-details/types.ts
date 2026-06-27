@@ -11,6 +11,16 @@ export type MemberBalance = {
   direction: "owes_you" | "you_owe";
 };
 
+export type GroupTransaction = {
+  id: string;
+  name: string;
+  paidByMemberId: string;
+  splitCount: number;
+  totalAmount: number;
+  yourShare: number;
+  date: string;
+};
+
 export type GroupDetailsData = {
   id: string;
   name: string;
@@ -20,4 +30,5 @@ export type GroupDetailsData = {
   balanceStatus: "owed" | "owe";
   totalAmount: number;
   memberBalances: MemberBalance[];
+  transactions: GroupTransaction[];
 };

@@ -48,17 +48,9 @@ export function GroupDetailsHeader({
             icon={<Feather name="arrow-left" size={20} color="#000000" />}
             onPress={() => router.back()}
           />
-
-          <View className="flex-row gap-2">
-            <IconButton
-              icon={<Feather name="share" size={18} color="#000000" />}
-            />
-            <IconButton
-              icon={
-                <Feather name="more-horizontal" size={20} color="#000000" />
-              }
-            />
-          </View>
+          <IconButton
+            icon={<Feather name="more-horizontal" size={20} color="#000000" />}
+          />
         </View>
 
         <View className="self-start rounded-full bg-white/60 px-3 py-1">

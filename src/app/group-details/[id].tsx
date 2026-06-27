@@ -206,10 +206,12 @@ export default function GroupDetailsScreen() {
         />
 
         {type === "Activity" ? (
-          <GroupActivityList
-            transactions={group.transactions}
-            members={group.members}
-          />
+          <View className="mb-10">
+            <GroupActivityList
+              transactions={group.transactions}
+              members={group.members}
+            />
+          </View>
         ) : null}
       </View>
     </ScrollView>

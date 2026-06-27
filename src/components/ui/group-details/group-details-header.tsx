@@ -59,7 +59,7 @@ export function GroupDetailsHeader({
           </Text>
         </View>
 
-        <Text className="mt-3 text-5xl font-bold text-tally-text">{name}</Text>
+        <Text className="mt-3 text-4xl font-bold text-tally-text">{name}</Text>
 
         <View className="mt-4 flex-row items-center">
           <View className="flex-row items-center">

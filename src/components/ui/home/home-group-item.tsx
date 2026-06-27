@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { type Href, router } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 
 const PARTICIPANT_COLORS = [
   "#E8D4F0",
@@ -45,8 +46,11 @@ export function HomeGroupItem({ group, isLast = false }: HomeGroupItemProps) {
     group;
 
   return (
-    <View
-      className={`flex-row items-center gap-3 px-4 py-4 ${
+    <Pressable
+      onPress={() =>
+        router.push(`/group-details/${group.id}` as Href)
+      }
+      className={`flex-row items-center gap-3 px-4 py-4 active:opacity-80 ${
         !isLast ? "border-b border-black/5" : ""
       }`}
     >
@@ -101,6 +105,6 @@ export function HomeGroupItem({ group, isLast = false }: HomeGroupItemProps) {
           </Text>
         )}
       </View>
-    </View>
+    </Pressable>
   );
 }

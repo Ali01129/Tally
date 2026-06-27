@@ -8,47 +8,36 @@ import { ExpenseAttachmentButtons } from "@/components/ui/add-expense/expense-at
 import { ExpenseDetailsCard } from "@/components/ui/add-expense/expense-details-card";
 import { GroupSelector } from "@/components/ui/add-expense/group-selector";
 import { SplitAssignmentStatus } from "@/components/ui/add-expense/split-assignment-status";
+import { SplitMembersList } from "@/components/ui/add-expense/split-members-list";
 import {
-  SplitMembersList,
-  type SplitMember,
-} from "@/components/ui/add-expense/split-members-list";
-import {
-  SplitSelector,
-  type SplitMethod,
+    SplitSelector,
+    type SplitMethod,
 } from "@/components/ui/add-expense/split-selector";
 import { CreateGroupHeader } from "@/components/ui/create-group/create-group-header";
 import { DateBottomSheet } from "@/components/ui/date-bottom-sheet";
 import { OptionsBottomSheet } from "@/components/ui/options-bottom-sheet";
+import { ADD_EXPENSE_GROUPS, ADD_EXPENSE_MEMBERS } from "@/data/app-data";
 import { useAddExpenseStore } from "@/stores/add-expense-store";
-
-const GROUPS = [
-  { id: "1", name: "Italy trip", initials: "It" },
-  { id: "2", name: "Roommates", initials: "Ro" },
-  { id: "3", name: "Weekend crew", initials: "We" },
-  { id: "4", name: "Office lunch", initials: "Of" },
-];
-
-const GROUP_MEMBERS: SplitMember[] = [
-  { id: "you", name: "You", initial: "M", avatarColor: "#D4C5F0" },
-  { id: "1", name: "Jordan", initial: "J", avatarColor: "#C5D8F0" },
-  { id: "2", name: "Priya", initial: "P", avatarColor: "#F0C5D8" },
-  { id: "3", name: "Theo", initial: "T", avatarColor: "#F0E8C5" },
-];
 
 export default function AddExpenseScreen() {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [splitMethod, setSplitMethod] = useState<SplitMethod>("equal");
-  const [selectedGroupId, setSelectedGroupId] = useState(GROUPS[0].id);
-  const [selectedPaidById, setSelectedPaidById] = useState(GROUP_MEMBERS[0].id);
+  const [selectedGroupId, setSelectedGroupId] = useState(
+    ADD_EXPENSE_GROUPS[0].id,
+  );
+  const [selectedPaidById, setSelectedPaidById] = useState(
+    ADD_EXPENSE_MEMBERS[0].id,
+  );
   const [isGroupSheetOpen, setIsGroupSheetOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [isDateSheetOpen, setIsDateSheetOpen] = useState(false);
   const selectedGroup =
-    GROUPS.find((group) => group.id === selectedGroupId) ?? GROUPS[0];
+    ADD_EXPENSE_GROUPS.find((group) => group.id === selectedGroupId) ??
+    ADD_EXPENSE_GROUPS[0];
   const selectedPaidByMember =
-    GROUP_MEMBERS.find((member) => member.id === selectedPaidById) ??
-    GROUP_MEMBERS[0];
+    ADD_EXPENSE_MEMBERS.find((member) => member.id === selectedPaidById) ??
+    ADD_EXPENSE_MEMBERS[0];
   const setTotalAmount = useAddExpenseStore((state) => state.setTotalAmount);
   const resetAddExpenseStore = useAddExpenseStore((state) => state.reset);
   const totalAmount = useAddExpenseStore((state) => state.totalAmount);
@@ -129,7 +118,7 @@ export default function AddExpenseScreen() {
               isPresented={isGroupSheetOpen}
               onDismiss={() => setIsGroupSheetOpen(false)}
               heading="Choose groups"
-              options={GROUPS.map((group) => ({
+              options={ADD_EXPENSE_GROUPS.map((group) => ({
                 value: group.id,
                 label: group.name,
                 avatarInitial: group.initials,
@@ -147,7 +136,7 @@ export default function AddExpenseScreen() {
               description={description}
               onChangeDescription={setDescription}
               paidByLabel={selectedPaidByMember.name}
-              paidByOptions={GROUP_MEMBERS.map((member) => ({
+              paidByOptions={ADD_EXPENSE_MEMBERS.map((member) => ({
                 value: member.id,
                 label: member.name,
                 avatarInitial: member.initial,
@@ -172,7 +161,7 @@ export default function AddExpenseScreen() {
             <SplitMembersList
               splitMethod={splitMethod}
               totalAmount={amount}
-              members={GROUP_MEMBERS}
+              members={ADD_EXPENSE_MEMBERS}
             />
 
             <SplitAssignmentStatus />

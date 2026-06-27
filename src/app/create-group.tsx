@@ -4,21 +4,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CreateGroupHeader } from "@/components/ui/create-group/create-group-header";
 import {
-  GroupMembers,
-  type InvitedMember,
+    GroupMembers,
+    type InvitedMember,
 } from "@/components/ui/create-group/group-members";
 import { GroupPreview } from "@/components/ui/create-group/group-preview";
 import {
-  GroupTypeSelector,
-  type GroupType,
+    GroupTypeSelector,
+    type GroupType,
 } from "@/components/ui/create-group/group-type-selector";
 import { Input } from "@/components/ui/input";
-
-const MOCK_INVITED_MEMBERS: InvitedMember[] = [
-  { id: "1", name: "Jordan", initial: "J", avatarColor: "#C5D8F0" },
-  { id: "2", name: "Theo", initial: "T", avatarColor: "#F0E8C5" },
-  { id: "3", name: "Priya", initial: "P", avatarColor: "#F0C5D8" },
-];
+import { APP_USER, CREATE_GROUP_INVITED_MEMBERS } from "@/data/app-data";
 
 function getInitials(name: string) {
   const trimmed = name.trim();
@@ -31,8 +26,9 @@ function getInitials(name: string) {
 export default function CreateGroupScreen() {
   const [groupName, setGroupName] = useState("");
   const [type, setType] = useState<GroupType>("trip");
-  const [invitedMembers, setInvitedMembers] =
-    useState<InvitedMember[]>(MOCK_INVITED_MEMBERS);
+  const [invitedMembers, setInvitedMembers] = useState<InvitedMember[]>(
+    CREATE_GROUP_INVITED_MEMBERS,
+  );
 
   const initials = useMemo(() => getInitials(groupName), [groupName]);
 
@@ -69,7 +65,7 @@ export default function CreateGroupScreen() {
           <GroupTypeSelector value={type} onChange={setType} />
 
           <GroupMembers
-            currentUser={{ name: "Maya Chen", initial: "M" }}
+            currentUser={{ name: APP_USER.name, initial: APP_USER.initial }}
             invitedMembers={invitedMembers}
             onRemoveMember={(id) =>
               setInvitedMembers((prev) => prev.filter((m) => m.id !== id))

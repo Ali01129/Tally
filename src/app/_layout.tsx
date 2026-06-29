@@ -15,6 +15,7 @@ export default function RootLayout() {
         <Stack.Screen name="login" />
         <Stack.Screen name="create-group" />
         <Stack.Screen name="add-expense" />
+        <Stack.Screen name="group-details/[id]" />
         <Stack.Screen name="(tabs)" />
       </Stack>
     </>

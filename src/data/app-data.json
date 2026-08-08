@@ -268,5 +268,68 @@
       { "id": "2", "name": "Theo", "initial": "T", "avatarColor": "#F0E8C5" },
       { "id": "3", "name": "Priya", "initial": "P", "avatarColor": "#F0C5D8" }
     ]
+  },
+  "friends": {
+    "summary": {
+      "owedAmount": "$248.50",
+      "owedPeopleCount": 3,
+      "oweAmount": "$50.40",
+      "owePeopleCount": 2
+    },
+    "list": [
+      {
+        "id": "jordan",
+        "name": "Jordan",
+        "initial": "J",
+        "avatarColor": "#C5D8F0",
+        "context": "2 groups · Italy trip · Dinner at Da ...",
+        "status": "owes_you",
+        "amount": 112.2
+      },
+      {
+        "id": "priya",
+        "name": "Priya",
+        "initial": "P",
+        "avatarColor": "#F0C5D8",
+        "context": "1 group · Italy trip",
+        "status": "owes_you",
+        "amount": 86.3
+      },
+      {
+        "id": "theo",
+        "name": "Theo",
+        "initial": "T",
+        "avatarColor": "#F0E8C5",
+        "context": "1 group · Italy trip",
+        "status": "owes_you",
+        "amount": 50
+      },
+      {
+        "id": "ava",
+        "name": "Alex",
+        "initial": "A",
+        "avatarColor": "#E8D4F0",
+        "context": "1 group · Roommates",
+        "status": "you_owe",
+        "amount": 30.4
+      },
+      {
+        "id": "sam",
+        "name": "Sam",
+        "initial": "S",
+        "avatarColor": "#D4E8F0",
+        "context": "1 group · Roommates",
+        "status": "you_owe",
+        "amount": 20
+      },
+      {
+        "id": "riley",
+        "name": "Riley",
+        "initial": "R",
+        "avatarColor": "#F0D4E8",
+        "context": "1 group · Weekend crew",
+        "status": "settled"
+      }
+    ]
   }
 }

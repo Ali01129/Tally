@@ -25,6 +25,14 @@ export default function AppTabs() {
           md={{ default: "search", selected: "search" }}
         />
       </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="friends">
+        <NativeTabs.Trigger.Label>Friends</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: "person.2", selected: "person.2.fill" }}
+          md={{ default: "group", selected: "group" }}
+        />
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }

@@ -7,6 +7,7 @@ import {
   type FriendFilter,
 } from "@/components/ui/friends/friends-filter-tabs";
 import { FriendsHeader } from "@/components/ui/friends/friends-header";
+import { FriendsInviteCard } from "@/components/ui/friends/friends-invite-card";
 import { FriendsList } from "@/components/ui/friends/friends-list";
 import { FriendsSearchBar } from "@/components/ui/friends/friends-search-bar";
 import { FriendsSummaryCards } from "@/components/ui/friends/friends-summary-cards";
@@ -62,6 +63,7 @@ export default function FriendsScreen() {
             onChange={setSelectedFilter}
           />
           <FriendsList friends={filteredFriends} />
+          <FriendsInviteCard />
         </View>
       </SafeAreaView>
     </ScrollView>

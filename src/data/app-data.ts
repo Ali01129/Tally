@@ -1,4 +1,5 @@
 import type { SplitMember } from "@/components/ui/add-expense/split-members-list";
+import type { FriendData } from "@/components/ui/friends/friend-item";
 import type { InvitedMember } from "@/components/ui/create-group/group-members";
 import type { GroupDetailsData } from "@/components/ui/group-details/types";
 import type { HomeGroupItemData } from "@/components/ui/home/home-group-item";
@@ -31,6 +32,15 @@ type AppData = {
   };
   createGroup: {
     invitedMembers: InvitedMember[];
+  };
+  friends: {
+    summary: {
+      owedAmount: string;
+      owedPeopleCount: number;
+      oweAmount: string;
+      owePeopleCount: number;
+    };
+    list: FriendData[];
   };
 };
 
@@ -72,3 +82,6 @@ export const ADD_EXPENSE_GROUPS = data.groups.map(({ id, name, initials }) => ({
 export const ADD_EXPENSE_MEMBERS: SplitMember[] = data.addExpense.members;
 export const CREATE_GROUP_INVITED_MEMBERS: InvitedMember[] =
   data.createGroup.invitedMembers;
+
+export const FRIENDS_SUMMARY = data.friends.summary;
+export const FRIENDS_LIST: FriendData[] = data.friends.list;

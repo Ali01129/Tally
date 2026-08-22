@@ -1,6 +1,7 @@
 import type { SplitMember } from "@/components/ui/add-expense/split-members-list";
 import type { FriendData } from "@/components/ui/friends/friend-item";
 import type { InvitedMember } from "@/components/ui/create-group/group-members";
+import type { ActivityItem } from "@/components/ui/activity/types";
 import type { GroupDetailsData } from "@/components/ui/group-details/types";
 import type { HomeGroupItemData } from "@/components/ui/home/home-group-item";
 
@@ -85,3 +86,20 @@ export const CREATE_GROUP_INVITED_MEMBERS: InvitedMember[] =
 
 export const FRIENDS_SUMMARY = data.friends.summary;
 export const FRIENDS_LIST: FriendData[] = data.friends.list;
+
+export const ALL_ACTIVITY: ActivityItem[] = data.groups
+  .flatMap((group) =>
+    group.transactions.map((transaction) => {
+      const payer = group.members.find(
+        (member) => member.id === transaction.paidByMemberId,
+      );
+
+      return {
+        ...transaction,
+        groupId: group.id,
+        groupName: group.name,
+        paidByName: payer?.name ?? "Someone",
+      };
+    }),
+  )
+  .sort((left, right) => right.date.localeCompare(left.date));

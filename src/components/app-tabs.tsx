@@ -18,11 +18,14 @@ export default function AppTabs() {
         />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="explore">
-        <NativeTabs.Trigger.Label>Explore</NativeTabs.Trigger.Label>
+      <NativeTabs.Trigger name="activity">
+        <NativeTabs.Trigger.Label>Activity</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          sf={{ default: "magnifyingglass", selected: "magnifyingglass" }}
-          md={{ default: "search", selected: "search" }}
+          sf={{
+            default: "clock.arrow.circlepath",
+            selected: "clock.arrow.circlepath",
+          }}
+          md={{ default: "history", selected: "history" }}
         />
       </NativeTabs.Trigger>
 

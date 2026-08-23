@@ -21,6 +21,16 @@ type AppData = {
     name: string;
     displayName: string;
     initial: string;
+    email: string;
+    handle: string;
+    verified: boolean;
+    avatarColor: string;
+  };
+  you: {
+    groupsCount: number;
+    friendsCount: number;
+    netBalance: string;
+    appVersion: string;
   };
   home: {
     netBalance: string;
@@ -48,6 +58,7 @@ type AppData = {
 const data = appData as AppData;
 
 export const APP_USER = data.user;
+export const YOU_PROFILE = data.you;
 export const HOME_BALANCE_CARD = data.home;
 
 export const HOME_GROUPS: HomeGroupItemData[] = data.groups.map(

@@ -24,10 +24,16 @@ export const Colors = {
   },
   tally: {
     primary: "#785DC3",
+    primaryLight: "#F5F0FD",
     background: "#F7F5F3",
     groupBg: "#F0E8E2",
     groupBox: "#E6DFD8",
+    groupCircles: "#E6DFD8",
     text: "#000000",
+    textSecondary: "#808080",
+    red: "#EAB180",
+    green: "#B3E59D",
+    textOnPrimary: "#C9BEE7",
   },
 } as const;
 

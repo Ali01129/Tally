@@ -1,5 +1,6 @@
 import "@/global.css";
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 
@@ -10,6 +11,7 @@ export const unstable_settings = {
 export default function RootLayout() {
   return (
     <>
+      <StatusBar style="dark" />
       <AnimatedSplashOverlay />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="login" />

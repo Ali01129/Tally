@@ -6,7 +6,11 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "tally",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#F7F5F3"
+    },
     "ios": {
       "icon": "./assets/expo.icon"
     },

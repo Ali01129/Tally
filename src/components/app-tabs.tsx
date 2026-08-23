@@ -2,13 +2,19 @@ import { Colors } from "@/constants/theme";
 import { NativeTabs } from "expo-router/unstable-native-tabs";
 
 export default function AppTabs() {
-  const tabBarColors = Colors.light;
+  const { primary, primaryLight, background, textSecondary } = Colors.tally;
 
   return (
     <NativeTabs
-      backgroundColor={tabBarColors.background}
-      indicatorColor={tabBarColors.backgroundElement}
-      labelStyle={{ selected: { color: tabBarColors.text } }}
+      backgroundColor={background}
+      indicatorColor={primaryLight}
+      rippleColor={primaryLight}
+      tintColor={primary}
+      iconColor={{ default: textSecondary, selected: primary }}
+      labelStyle={{
+        default: { color: textSecondary },
+        selected: { color: primary },
+      }}
     >
       <NativeTabs.Trigger name="index">
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>

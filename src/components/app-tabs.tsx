@@ -36,6 +36,14 @@ export default function AppTabs() {
           md={{ default: "group", selected: "group" }}
         />
       </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="you">
+        <NativeTabs.Trigger.Label>You</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: "person", selected: "person.fill" }}
+          md={{ default: "person", selected: "person" }}
+        />
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }

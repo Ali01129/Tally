@@ -18,7 +18,12 @@ export function Avatar({
       style={{ width: size, height: size, backgroundColor }}
       className={`items-center justify-center rounded-full ${className}`}
     >
-      <Text className="text-lg font-bold text-tally-primary">{initial}</Text>
+      <Text
+        style={{ fontSize: Math.round(size * 0.4) }}
+        className="font-bold text-tally-primary"
+      >
+        {initial}
+      </Text>
     </View>
   );
 }

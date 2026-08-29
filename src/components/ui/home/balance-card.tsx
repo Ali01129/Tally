@@ -14,7 +14,7 @@ export function BalanceCard({
   oweAmount,
 }: BalanceCardProps) {
   return (
-    <View className="relative overflow-hidden rounded-3xl bg-tally-primary p-6">
+    <View className="relative overflow-hidden rounded-3xl bg-tally-primary p-8">
       <View className="absolute -right-8 -top-12 h-48 w-48 rounded-full bg-white/10" />
       <View className="absolute -right-14 -top-14 h-40 w-40 rounded-full border border-white/20 bg-transparent" />
 

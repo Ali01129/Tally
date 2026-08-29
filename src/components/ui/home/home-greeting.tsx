@@ -21,11 +21,9 @@ type HomeGreetingProps = {
 
 export function HomeGreeting({ userName = "Maya" }: HomeGreetingProps) {
   const greeting = getTimeGreeting();
-  const dateLabel = formatDate(new Date());
 
   return (
     <View className="gap-1">
-      <Text className="text-sm text-tally-textSecondary">{dateLabel}</Text>
       <Text className="text-3xl font-bold text-tally-text">
         {greeting}, {userName}.
       </Text>

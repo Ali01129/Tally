@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { type Href, router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 
@@ -42,6 +42,9 @@ export default function GroupDetailsScreen() {
             totalAmount={group.totalAmount}
             members={group.members}
             memberBalances={group.memberBalances}
+            onSettleUp={() =>
+              router.push(`/settle-up/${group.id}` as Href)
+            }
           />
         ) : null}
 

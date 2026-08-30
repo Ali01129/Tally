@@ -1,4 +1,5 @@
 import { DefaultTheme, ThemeProvider } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 import AppTabs from "@/components/app-tabs";
 import { Colors } from "@/constants/theme";
@@ -18,6 +19,7 @@ const tallyTheme = {
 export default function TabLayout() {
   return (
     <ThemeProvider value={tallyTheme}>
+      <StatusBar style="dark" />
       <AppTabs />
     </ThemeProvider>
   );

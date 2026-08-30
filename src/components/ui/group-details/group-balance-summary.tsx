@@ -35,6 +35,9 @@ export function GroupBalanceSummary({
   const memberMap = new Map(members.map((member) => [member.id, member]));
   const amountColor =
     balanceStatus === "owed" ? "text-tally-green" : "text-tally-red";
+  const canSettleUp = memberBalances.some(
+    (balance) => balance.direction === "you_owe",
+  );
 
   return (
     <View className="rounded-3xl bg-white p-5">
@@ -48,13 +51,15 @@ export function GroupBalanceSummary({
           </Text>
         </View>
 
-        <Pressable
-          onPress={onSettleUp}
-          className="flex-row items-center gap-2 rounded-full bg-tally-primary px-4 py-2.5 active:opacity-90"
-        >
-          <FontAwesome5 name="handshake" size={14} color="#FFFFFF" />
-          <Text className="text-sm font-semibold text-white">Settle up</Text>
-        </Pressable>
+        {canSettleUp ? (
+          <Pressable
+            onPress={onSettleUp}
+            className="flex-row items-center gap-2 rounded-full bg-tally-primary px-4 py-2.5 active:opacity-90"
+          >
+            <FontAwesome5 name="handshake" size={14} color="#FFFFFF" />
+            <Text className="text-sm font-semibold text-white">Settle up</Text>
+          </Pressable>
+        ) : null}
       </View>
 
       <View className="mt-5 gap-4">

@@ -24,6 +24,7 @@ export type GroupTransaction = {
 export type GroupDetailsData = {
   id: string;
   name: string;
+  initials: string;
   type: "trip" | "home" | "couple" | "other";
   timeline?: string;
   members: GroupMember[];

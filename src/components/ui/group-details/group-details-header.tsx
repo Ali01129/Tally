@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import { Text, View } from "react-native";
+import { type Href, router } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Avatar } from "@/components/ui/avatar";
@@ -9,10 +9,14 @@ import { IconButton } from "@/components/ui/icon-button";
 import type { GroupMember } from "./types";
 
 type GroupDetailsHeaderProps = {
+  groupId: string;
   name: string;
   type: string;
   timeline?: string;
   members: GroupMember[];
+  variant?: "details" | "settings";
+  onSave?: () => void;
+  saveDisabled?: boolean;
 };
 
 const AVATAR_SIZE = 36;
@@ -23,12 +27,17 @@ function formatMemberNames(members: GroupMember[]): string {
 }
 
 export function GroupDetailsHeader({
+  groupId,
   name,
   type,
   timeline,
   members,
+  variant = "details",
+  onSave,
+  saveDisabled = false,
 }: GroupDetailsHeaderProps) {
   const insets = useSafeAreaInsets();
+  const isSettings = variant === "settings";
 
   const timelineLabel = timeline
     ? `${type.toUpperCase()} · ${timeline}`
@@ -48,9 +57,26 @@ export function GroupDetailsHeader({
             icon={<Feather name="arrow-left" size={20} color="#000000" />}
             onPress={() => router.back()}
           />
-          <IconButton
-            icon={<Feather name="more-horizontal" size={20} color="#000000" />}
-          />
+          {isSettings ? (
+            <Pressable
+              onPress={onSave}
+              disabled={saveDisabled}
+              className={saveDisabled ? "opacity-40" : "active:opacity-80"}
+            >
+              <View className="rounded-full bg-tally-primary px-4 py-2">
+                <Text className="text-sm font-semibold text-white">Save</Text>
+              </View>
+            </Pressable>
+          ) : (
+            <IconButton
+              icon={
+                <Feather name="more-horizontal" size={20} color="#000000" />
+              }
+              onPress={() =>
+                router.push(`/group-settings/${groupId}` as Href)
+              }
+            />
+          )}
         </View>
 
         <View className="self-start rounded-full bg-white/60 px-3 py-1">

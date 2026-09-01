@@ -23,6 +23,7 @@ type GroupMembersProps = {
   onAddPeople?: () => void;
   onShareLink?: () => void;
   onFromContacts?: () => void;
+  variant?: "create" | "settings";
 };
 
 function MemberRow({
@@ -72,7 +73,9 @@ export function GroupMembers({
   onAddPeople,
   onShareLink,
   onFromContacts,
+  variant = "create",
 }: GroupMembersProps) {
+  const isSettings = variant === "settings";
   const memberCount = 1 + invitedMembers.length;
 
   return (
@@ -119,7 +122,7 @@ export function GroupMembers({
                 {member.name}
               </Text>
               <Text className="text-sm text-tally-textSecondary">
-                Invite sent
+                {isSettings ? "Member" : "Invite sent"}
               </Text>
             </View>
             <Pressable
@@ -143,10 +146,10 @@ export function GroupMembers({
             className="min-w-0 flex-1 active:opacity-80"
           >
             <Text className="text-base text-tally-textSecondary">
-              Add people or share link...
+              {isSettings ? "Add new member" : "Add people or share link..."}
             </Text>
           </Pressable>
-          <ShareLinkTag onPress={onShareLink} />
+          {!isSettings ? <ShareLinkTag onPress={onShareLink} /> : null}
         </MemberRow>
       </View>
     </View>

@@ -29,6 +29,7 @@ export default function GroupDetailsScreen() {
       showsVerticalScrollIndicator={false}
     >
       <GroupDetailsHeader
+        groupId={group.id}
         name={group.name}
         type={group.type}
         timeline={group.timeline}

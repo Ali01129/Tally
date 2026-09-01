@@ -19,6 +19,7 @@ export function HomeHeader({ userInitial = "M" }: HomeHeaderProps) {
         <IconButton
           icon={<Feather name="bell" size={20} color="#000000" />}
           showBadge
+          onPress={() => router.navigate("/activity")}
         />
       </View>
     </View>

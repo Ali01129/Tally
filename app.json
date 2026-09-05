@@ -45,7 +45,10 @@
         }
       ],
       "expo-image",
-      "expo-system-ui"
+      "expo-system-ui",
+      "expo-font",
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

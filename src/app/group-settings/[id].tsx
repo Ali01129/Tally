@@ -53,6 +53,10 @@ export default function GroupSettingsScreen() {
     () => (group ? splitGroupMembers(group.members).otherMembers : []),
     [group],
   );
+  const savedMemberIds = useMemo(
+    () => new Set(initialMembers.map((member) => member.id)),
+    [initialMembers],
+  );
 
   const [groupName, setGroupName] = useState(group?.name ?? "");
   const [members, setMembers] = useState<InvitedMember[]>(initialMembers);
@@ -141,9 +145,11 @@ export default function GroupSettingsScreen() {
               avatarColor: APP_USER.avatarColor,
             }}
             invitedMembers={members}
-            onRemoveMember={(memberId) =>
-              setMembers((prev) => prev.filter((m) => m.id !== memberId))
-            }
+            canRemoveMember={(memberId) => !savedMemberIds.has(memberId)}
+            onRemoveMember={(memberId) => {
+              if (savedMemberIds.has(memberId)) return;
+              setMembers((prev) => prev.filter((m) => m.id !== memberId));
+            }}
             onAddPeople={() => setIsAddMembersOpen(true)}
           />
         </View>

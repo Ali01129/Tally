@@ -20,6 +20,8 @@ type GroupMembersProps = {
   };
   invitedMembers: InvitedMember[];
   onRemoveMember?: (id: string) => void;
+  /** When set, remove is only enabled for members that return true. */
+  canRemoveMember?: (id: string) => boolean;
   onAddPeople?: () => void;
   onShareLink?: () => void;
   onFromContacts?: () => void;
@@ -70,6 +72,7 @@ export function GroupMembers({
   currentUser,
   invitedMembers,
   onRemoveMember,
+  canRemoveMember,
   onAddPeople,
   onShareLink,
   onFromContacts,
@@ -107,32 +110,39 @@ export function GroupMembers({
           <AdminTag />
         </MemberRow>
 
-        {invitedMembers.map((member, index) => (
-          <MemberRow key={member.id}>
-            <Avatar
-              initial={member.initial}
-              backgroundColor={
-                member.avatarColor ??
-                MEMBER_AVATAR_COLORS[(index + 1) % MEMBER_AVATAR_COLORS.length]
-              }
-              size={40}
-            />
-            <View className="min-w-0 flex-1">
-              <Text className="text-base font-bold text-tally-text">
-                {member.name}
-              </Text>
-              <Text className="text-sm text-tally-textSecondary">
-                {isSettings ? "Member" : "Invite sent"}
-              </Text>
-            </View>
-            <Pressable
-              onPress={() => onRemoveMember?.(member.id)}
-              className="h-8 w-8 items-center justify-center rounded-full bg-tally-primary active:opacity-80"
-            >
-              <Feather name="x" size={16} color="#ffffff" />
-            </Pressable>
-          </MemberRow>
-        ))}
+        {invitedMembers.map((member, index) => {
+          const canRemove = canRemoveMember?.(member.id) ?? true;
+
+          return (
+            <MemberRow key={member.id}>
+              <Avatar
+                initial={member.initial}
+                backgroundColor={
+                  member.avatarColor ??
+                  MEMBER_AVATAR_COLORS[(index + 1) % MEMBER_AVATAR_COLORS.length]
+                }
+                size={40}
+              />
+              <View className="min-w-0 flex-1">
+                <Text className="text-base font-bold text-tally-text">
+                  {member.name}
+                </Text>
+                <Text className="text-sm text-tally-textSecondary">
+                  {isSettings ? "Member" : "Invite sent"}
+                </Text>
+              </View>
+              <Pressable
+                disabled={!canRemove}
+                onPress={() => onRemoveMember?.(member.id)}
+                className={`h-8 w-8 items-center justify-center rounded-full bg-tally-primary ${
+                  canRemove ? "active:opacity-80" : "opacity-40"
+                }`}
+              >
+                <Feather name="x" size={16} color="#ffffff" />
+              </Pressable>
+            </MemberRow>
+          );
+        })}
 
         <MemberRow isLast>
           <Pressable

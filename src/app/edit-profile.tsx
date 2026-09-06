@@ -7,26 +7,17 @@ import { EditProfileAccount } from "@/components/ui/edit-profile/edit-profile-ac
 import { EditProfileAvatar } from "@/components/ui/edit-profile/edit-profile-avatar";
 import { EditProfileForm } from "@/components/ui/edit-profile/edit-profile-form";
 import { EditProfileHeader } from "@/components/ui/edit-profile/edit-profile-header";
+import { OptionsBottomSheet } from "@/components/ui/options-bottom-sheet";
 import { APP_USER } from "@/data/app-data";
 
-const ACCOUNT_ROWS = [
-  {
-    id: "currency",
-    label: "Default currency",
-    value: "USD",
-    icon: "dollar-sign" as const,
-  },
-  {
-    id: "password",
-    label: "Change password",
-    icon: "lock" as const,
-  },
-  {
-    id: "delete",
-    label: "Request to delete account",
-    icon: "trash-2" as const,
-    destructive: true,
-  },
+const CURRENCY_OPTIONS = [
+  { value: "USD", label: "US Dollar", avatarInitial: "USD" },
+  { value: "EUR", label: "Euro", avatarInitial: "EUR" },
+  { value: "GBP", label: "British Pound", avatarInitial: "GBP" },
+  { value: "CAD", label: "Canadian Dollar", avatarInitial: "CAD" },
+  { value: "AUD", label: "Australian Dollar", avatarInitial: "AUD" },
+  { value: "INR", label: "Indian Rupee", avatarInitial: "INR" },
+  { value: "PKR", label: "Pakistani Rupee", avatarInitial: "PKR" },
 ];
 
 function getInitial(name: string) {
@@ -39,14 +30,45 @@ export default function EditProfileScreen() {
   const [name, setName] = useState(APP_USER.name);
   const [displayName, setDisplayName] = useState(APP_USER.displayName);
   const [avatarColor, setAvatarColor] = useState(APP_USER.avatarColor);
+  const [currency, setCurrency] = useState("USD");
+  const [isCurrencySheetOpen, setIsCurrencySheetOpen] = useState(false);
 
   const initial = useMemo(() => getInitial(name), [name]);
   const canSave = name.trim().length > 0;
+
+  const accountRows = useMemo(
+    () => [
+      {
+        id: "currency",
+        label: "Default currency",
+        value: currency,
+        icon: "dollar-sign" as const,
+      },
+      {
+        id: "password",
+        label: "Change password",
+        icon: "lock" as const,
+      },
+      {
+        id: "delete",
+        label: "Request to delete account",
+        icon: "trash-2" as const,
+        destructive: true,
+      },
+    ],
+    [currency],
+  );
 
   const handleSave = () => {
     if (!canSave) return;
     // Hook up to real save logic later.
     router.back();
+  };
+
+  const handleAccountRowPress = (id: string) => {
+    if (id === "currency") {
+      setIsCurrencySheetOpen(true);
+    }
   };
 
   return (
@@ -76,9 +98,21 @@ export default function EditProfileScreen() {
             onChangeDisplayName={setDisplayName}
           />
 
-          <EditProfileAccount rows={ACCOUNT_ROWS} />
+          <EditProfileAccount
+            rows={accountRows}
+            onRowPress={handleAccountRowPress}
+          />
         </View>
       </SafeAreaView>
+
+      <OptionsBottomSheet
+        isPresented={isCurrencySheetOpen}
+        onDismiss={() => setIsCurrencySheetOpen(false)}
+        heading="Default currency"
+        options={CURRENCY_OPTIONS}
+        selectedValue={currency}
+        onSelect={setCurrency}
+      />
     </ScrollView>
   );
 }

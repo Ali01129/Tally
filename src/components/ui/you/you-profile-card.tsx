@@ -8,7 +8,6 @@ import { YouProfileStats } from "@/components/ui/you/you-profile-stats";
 type YouProfileCardProps = {
   name: string;
   email: string;
-  handle: string;
   initial: string;
   avatarColor?: string;
   verified?: boolean;
@@ -21,7 +20,6 @@ type YouProfileCardProps = {
 export function YouProfileCard({
   name,
   email,
-  handle,
   initial,
   avatarColor = "#D4C5F0",
   verified = true,
@@ -57,10 +55,8 @@ export function YouProfileCard({
                 <Text className="text-sm text-tally-textSecondary">
                   Verified
                 </Text>
-                <Text className="text-sm text-tally-textSecondary">·</Text>
               </>
             ) : null}
-            <Text className="text-sm text-tally-textSecondary">{handle}</Text>
           </View>
         </View>
       </View>

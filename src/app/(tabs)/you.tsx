@@ -1,4 +1,5 @@
-import { router } from "expo-router";
+import { type Href, router } from "expo-router";
+import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -25,6 +26,19 @@ const SIGN_OUT_ITEMS = [
 ];
 
 export default function YouScreen() {
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+
+  const notificationsItems = [
+    {
+      id: "notifications",
+      label: "Notifications",
+      icon: "bell" as const,
+      showSwitch: true,
+      switchValue: notificationsEnabled,
+      onSwitchChange: setNotificationsEnabled,
+    },
+  ];
+
   return (
     <ScrollView
       className="flex-1 bg-tally-background"
@@ -36,15 +50,18 @@ export default function YouScreen() {
           <YouProfileCard
             name={APP_USER.name}
             email={APP_USER.email}
-            handle={APP_USER.handle}
             initial={APP_USER.initial}
             avatarColor={APP_USER.avatarColor}
             verified={APP_USER.verified}
             groupsCount={YOU_PROFILE.groupsCount}
             friendsCount={YOU_PROFILE.friendsCount}
             netBalance={YOU_PROFILE.netBalance}
+            onEditProfile={() => router.push("/edit-profile" as Href)}
           />
-          <YouProCard />
+          <YouProCard
+            onUpgrade={() => router.push("/upgrade-pro" as Href)}
+          />
+          <YouMenuSection title="Notifications" items={notificationsItems} />
           <YouMenuSection title="SUPPORT" items={SUPPORT_ITEMS} />
           <YouMenuSection
             items={SIGN_OUT_ITEMS}

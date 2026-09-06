@@ -58,7 +58,9 @@ export default function YouScreen() {
             netBalance={YOU_PROFILE.netBalance}
             onEditProfile={() => router.push("/edit-profile" as Href)}
           />
-          <YouProCard />
+          <YouProCard
+            onUpgrade={() => router.push("/upgrade-pro" as Href)}
+          />
           <YouMenuSection title="Notifications" items={notificationsItems} />
           <YouMenuSection title="SUPPORT" items={SUPPORT_ITEMS} />
           <YouMenuSection

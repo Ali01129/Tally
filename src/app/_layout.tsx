@@ -61,6 +61,7 @@ export default function RootLayout() {
           <Stack.Screen name="create-group" />
           <Stack.Screen name="add-expense" />
           <Stack.Screen name="edit-profile" />
+          <Stack.Screen name="upgrade-pro" />
           <Stack.Screen name="group-details/[id]" />
           <Stack.Screen name="group-settings/[id]" />
           <Stack.Screen name="settle-up/[id]" />

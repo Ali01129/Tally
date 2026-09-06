@@ -1,11 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
-type YouProCardProps = {
-  onUpgrade?: () => void;
-};
-
-export function YouProCard({ onUpgrade }: YouProCardProps) {
+export function UpgradeProHero() {
   return (
     <View className="relative overflow-hidden rounded-3xl bg-tally-primary p-5">
       <View className="absolute -right-6 top-[-8] h-32 w-32 rounded-full bg-white/10" />
@@ -19,23 +15,11 @@ export function YouProCard({ onUpgrade }: YouProCardProps) {
       </View>
 
       <Text className="mt-4 text-2xl font-bold leading-8 text-white">
-        Split bigger, with everyone.
+        Choose your plan
       </Text>
       <Text className="mt-2 text-sm leading-5 text-white/80">
         Unlimited groups & members, receipts OCR, multi-currency, and more.
       </Text>
-
-      <View className="mt-5 flex-row items-center gap-4">
-        <Pressable
-          onPress={onUpgrade}
-          className="flex-row items-center gap-1.5 rounded-full bg-white px-4 py-2.5 active:opacity-90"
-        >
-          <Text className="text-sm font-semibold text-tally-primary">
-            Upgrade
-          </Text>
-        </Pressable>
-        <Text className="text-sm text-white/80">7-day free trial</Text>
-      </View>
     </View>
   );
 }

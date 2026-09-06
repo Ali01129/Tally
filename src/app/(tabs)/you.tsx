@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { type Href, router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -56,6 +56,7 @@ export default function YouScreen() {
             groupsCount={YOU_PROFILE.groupsCount}
             friendsCount={YOU_PROFILE.friendsCount}
             netBalance={YOU_PROFILE.netBalance}
+            onEditProfile={() => router.push("/edit-profile" as Href)}
           />
           <YouProCard />
           <YouMenuSection title="Notifications" items={notificationsItems} />

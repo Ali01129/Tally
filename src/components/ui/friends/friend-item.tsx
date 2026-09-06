@@ -7,6 +7,7 @@ export type FriendBalanceStatus = "owes_you" | "you_owe" | "settled";
 export type FriendData = {
   id: string;
   name: string;
+  email?: string;
   initial: string;
   avatarColor: string;
   context: string;
@@ -17,6 +18,7 @@ export type FriendData = {
 type FriendItemProps = {
   friend: FriendData;
   isLast?: boolean;
+  nameOnly?: boolean;
 };
 
 function formatAmount(amount: number): string {
@@ -34,7 +36,11 @@ function getStatusLabel(status: FriendBalanceStatus): string {
   }
 }
 
-export function FriendItem({ friend, isLast = false }: FriendItemProps) {
+export function FriendItem({
+  friend,
+  isLast = false,
+  nameOnly = false,
+}: FriendItemProps) {
   const { name, initial, avatarColor, context, status, amount } = friend;
 
   return (
@@ -49,29 +55,33 @@ export function FriendItem({ friend, isLast = false }: FriendItemProps) {
         <Text className="text-base font-bold text-tally-text" numberOfLines={1}>
           {name}
         </Text>
-        <Text className="text-xs text-tally-textSecondary" numberOfLines={1}>
-          {context}
-        </Text>
+        {!nameOnly ? (
+          <Text className="text-xs text-tally-textSecondary" numberOfLines={1}>
+            {context}
+          </Text>
+        ) : null}
       </View>
 
-      <View className="items-end">
-        <Text className="text-xs text-tally-textSecondary">
-          {getStatusLabel(status)}
-        </Text>
-        {status === "settled" ? (
-          <Text className="mt-0.5 text-lg font-bold text-tally-textSecondary">
-            —
+      {!nameOnly ? (
+        <View className="items-end">
+          <Text className="text-xs text-tally-textSecondary">
+            {getStatusLabel(status)}
           </Text>
-        ) : (
-          <Text
-            className={`mt-0.5 text-lg font-bold ${
-              status === "owes_you" ? "text-tally-green" : "text-tally-red"
-            }`}
-          >
-            {amount != null ? formatAmount(amount) : "—"}
-          </Text>
-        )}
-      </View>
+          {status === "settled" ? (
+            <Text className="mt-0.5 text-lg font-bold text-tally-textSecondary">
+              —
+            </Text>
+          ) : (
+            <Text
+              className={`mt-0.5 text-lg font-bold ${
+                status === "owes_you" ? "text-tally-green" : "text-tally-red"
+              }`}
+            >
+              {amount != null ? formatAmount(amount) : "—"}
+            </Text>
+          )}
+        </View>
+      ) : null}
     </Pressable>
   );
 }

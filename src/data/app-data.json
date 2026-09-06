@@ -290,6 +290,7 @@
       {
         "id": "jordan",
         "name": "Jordan",
+        "email": "jordan@email.com",
         "initial": "J",
         "avatarColor": "#C5D8F0",
         "context": "2 groups · Italy trip · Dinner at Da ...",
@@ -299,6 +300,7 @@
       {
         "id": "priya",
         "name": "Priya",
+        "email": "priya@email.com",
         "initial": "P",
         "avatarColor": "#F0C5D8",
         "context": "1 group · Italy trip",
@@ -308,6 +310,7 @@
       {
         "id": "theo",
         "name": "Theo",
+        "email": "theo@email.com",
         "initial": "T",
         "avatarColor": "#F0E8C5",
         "context": "1 group · Italy trip",
@@ -317,6 +320,7 @@
       {
         "id": "ava",
         "name": "Alex",
+        "email": "alex@email.com",
         "initial": "A",
         "avatarColor": "#E8D4F0",
         "context": "1 group · Roommates",
@@ -326,6 +330,7 @@
       {
         "id": "sam",
         "name": "Sam",
+        "email": "sam@email.com",
         "initial": "S",
         "avatarColor": "#D4E8F0",
         "context": "1 group · Roommates",
@@ -335,6 +340,7 @@
       {
         "id": "riley",
         "name": "Riley",
+        "email": "riley@email.com",
         "initial": "R",
         "avatarColor": "#F0D4E8",
         "context": "1 group · Weekend crew",

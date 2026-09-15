@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 
+import { ActivityEmptyState } from "../group-details/activity-empty-state";
 import { ActivityTransactionRow } from "./activity-transaction-row";
 import type { ActivityItem } from "./types";
 import { groupActivityByDate } from "./utils";
@@ -13,11 +14,10 @@ export function ActivityList({ items }: ActivityListProps) {
 
   if (sections.length === 0) {
     return (
-      <View className="rounded-2xl bg-white px-4 py-8">
-        <Text className="text-center text-sm text-tally-textSecondary">
-          No activity yet
-        </Text>
-      </View>
+      <ActivityEmptyState
+        title="No activity found"
+        description="Add an expense first"
+      />
     );
   }
 

@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 
+import { ActivityEmptyState } from "./activity-empty-state";
 import { TransactionRow } from "./transaction-row";
 
 import type { GroupMember, GroupTransaction } from "./types";
@@ -97,11 +98,10 @@ export function GroupActivityList({
 
   if (sections.length === 0) {
     return (
-      <View className="rounded-2xl bg-white px-4 py-8">
-        <Text className="text-center text-sm text-tally-textSecondary">
-          No activity yet
-        </Text>
-      </View>
+      <ActivityEmptyState
+        title="Waiting for the first split"
+        description="Add an expense and this group comes to life."
+      />
     );
   }
 

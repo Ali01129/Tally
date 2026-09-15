@@ -1,7 +1,8 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import { AddFriendsUserCard } from "@/components/ui/friends/add-friends-user-card";
 import type { FriendData } from "@/components/ui/friends/friend-item";
+import { ActivityEmptyState } from "../group-details/activity-empty-state";
 
 type AddFriendsUserGridProps = {
   users: FriendData[];
@@ -16,11 +17,10 @@ export function AddFriendsUserGrid({
 }: AddFriendsUserGridProps) {
   if (users.length === 0) {
     return (
-      <View className="rounded-3xl bg-white px-4 py-8">
-        <Text className="text-center text-sm text-tally-textSecondary">
-          {emptyMessage}
-        </Text>
-      </View>
+      <ActivityEmptyState
+        title={emptyMessage}
+        description="Add a friend to get started."
+      />
     );
   }
 

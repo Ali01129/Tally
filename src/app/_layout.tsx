@@ -58,6 +58,7 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="login" />
+          <Stack.Screen name="verify-code" />
           <Stack.Screen name="create-group" />
           <Stack.Screen name="add-expense" />
           <Stack.Screen name="add-friends" />

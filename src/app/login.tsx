@@ -1,5 +1,6 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useState } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -12,6 +13,15 @@ import { Colors } from "@/constants/theme";
 const goHome = () => router.replace("/");
 
 export default function LoginScreen() {
+  const [email, setEmail] = useState("");
+
+  const goToVerifyCode = () => {
+    router.push({
+      pathname: "/verify-code",
+      params: { email: email.trim() },
+    });
+  };
+
   return (
     <View className="flex-1 bg-tally-background">
       <SafeAreaView className="flex-1 px-6">
@@ -25,6 +35,8 @@ export default function LoginScreen() {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
+              value={email}
+              onChangeText={setEmail}
             />
 
             <Button
@@ -32,7 +44,7 @@ export default function LoginScreen() {
               text="Continue"
               icon={<Feather name="arrow-right" size={20} color="#FFFFFF" />}
               iconPosition="right"
-              onPress={goHome}
+              onPress={goToVerifyCode}
             />
 
             <LoginDivider />

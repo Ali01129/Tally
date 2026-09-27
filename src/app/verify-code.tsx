@@ -12,11 +12,17 @@ const HINTS = [
 ];
 
 export default function VerifyCodeScreen() {
-  const { email } = useLocalSearchParams<{ email?: string }>();
+  const { email, flow } = useLocalSearchParams<{
+    email?: string;
+    flow?: string;
+  }>();
 
   const handleComplete = () => {
     setTimeout(() => {
-      router.replace("/create-passcode");
+      router.replace({
+        pathname: "/create-passcode",
+        params: flow ? { flow } : undefined,
+      });
     }, 320);
   };
 

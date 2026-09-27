@@ -45,8 +45,8 @@ export default function EditProfileScreen() {
         icon: "dollar-sign" as const,
       },
       {
-        id: "password",
-        label: "Change password",
+        id: "passcode",
+        label: "Change passcode",
         icon: "lock" as const,
       },
       {
@@ -68,6 +68,17 @@ export default function EditProfileScreen() {
   const handleAccountRowPress = (id: string) => {
     if (id === "currency") {
       setIsCurrencySheetOpen(true);
+      return;
+    }
+
+    if (id === "passcode") {
+      router.push({
+        pathname: "/verify-code",
+        params: {
+          email: APP_USER.email,
+          flow: "change-passcode",
+        },
+      });
     }
   };
 

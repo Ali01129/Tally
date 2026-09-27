@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 import { PinCodeEntry } from "@/components/ui/pin-code/pin-code-entry";
 import { setDraftPasscode } from "@/data/passcode";
@@ -13,10 +13,15 @@ const HINTS = [
 ];
 
 export default function CreatePasscodeScreen() {
+  const { flow } = useLocalSearchParams<{ flow?: string }>();
+
   const handleComplete = (code: string) => {
     setDraftPasscode(code);
     setTimeout(() => {
-      router.push("/confirm-passcode");
+      router.push({
+        pathname: "/confirm-passcode",
+        params: flow ? { flow } : undefined,
+      });
     }, 280);
   };
 

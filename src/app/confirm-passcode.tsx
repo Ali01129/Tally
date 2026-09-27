@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 import { PinCodeEntry } from "@/components/ui/pin-code/pin-code-entry";
 import {
@@ -17,11 +17,17 @@ const HINTS = [
 ];
 
 export default function ConfirmPasscodeScreen() {
+  const { flow } = useLocalSearchParams<{ flow?: string }>();
+  const isChangePasscode = flow === "change-passcode";
+
   const handleComplete = async (code: string) => {
     const draft = getDraftPasscode();
 
     if (!draft) {
-      router.replace("/create-passcode");
+      router.replace({
+        pathname: "/create-passcode",
+        params: flow ? { flow } : undefined,
+      });
       return false;
     }
 
@@ -32,6 +38,10 @@ export default function ConfirmPasscodeScreen() {
     await savePasscode(code);
     clearDraftPasscode();
     setTimeout(() => {
+      if (isChangePasscode) {
+        router.dismissTo("/edit-profile");
+        return;
+      }
       router.replace("/");
     }, 320);
   };

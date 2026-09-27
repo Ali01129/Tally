@@ -17,6 +17,8 @@ type AppGroupRecord = GroupDetailsData &
   };
 
 type AppData = {
+  new_user: boolean;
+  passcode: string | null;
   user: {
     name: string;
     displayName: string;

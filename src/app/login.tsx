@@ -9,17 +9,25 @@ import { LoginHeader } from "@/components/login-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Colors } from "@/constants/theme";
+import { isNewUser } from "@/data/passcode";
 
 const goHome = () => router.replace("/");
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
 
-  const goToVerifyCode = () => {
-    router.push({
-      pathname: "/verify-code",
-      params: { email: email.trim() },
-    });
+  const continueWithEmail = async () => {
+    const newUser = await isNewUser();
+
+    if (newUser) {
+      router.push({
+        pathname: "/verify-code",
+        params: { email: email.trim() },
+      });
+      return;
+    }
+
+    router.push("/enter-passcode");
   };
 
   return (
@@ -44,7 +52,9 @@ export default function LoginScreen() {
               text="Continue"
               icon={<Feather name="arrow-right" size={20} color="#FFFFFF" />}
               iconPosition="right"
-              onPress={goToVerifyCode}
+              onPress={() => {
+                void continueWithEmail();
+              }}
             />
 
             <LoginDivider />

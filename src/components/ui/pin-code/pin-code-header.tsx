@@ -1,4 +1,5 @@
 import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { Text, View } from "react-native";
 import Animated, {
@@ -16,38 +17,18 @@ import Animated, {
 
 import { IconButton } from "@/components/ui/icon-button";
 import { Colors } from "@/constants/theme";
-import { router } from "expo-router";
 
 const TALLY = Colors.tally;
 
-const HINTS = [
-  "Check your inbox — the digits are waiting.",
-  "Nice start. Keep going.",
-  "Halfway there…",
-  "Looking good.",
-  "One more digit!",
-  "You're in — hit enter!",
-];
-
-type VerifyCodeHeaderProps = {
-  email?: string;
-  filledCount: number;
-  codeLength: number;
-};
-
-function FloatingDot({
-  delay,
-  left,
-  top,
-  size,
-  color,
-}: {
+type FloatingDotProps = {
   delay: number;
   left: number;
   top: number;
   size: number;
   color: string;
-}) {
+};
+
+function FloatingDot({ delay, left, top, size, color }: FloatingDotProps) {
   const progress = useSharedValue(0);
   const appear = useSharedValue(0);
 
@@ -59,7 +40,10 @@ function FloatingDot({
     progress.value = withDelay(
       delay + 200,
       withRepeat(
-        withTiming(1, { duration: 2200 + delay, easing: Easing.inOut(Easing.sin) }),
+        withTiming(1, {
+          duration: 2200 + delay,
+          easing: Easing.inOut(Easing.sin),
+        }),
         -1,
         true,
       ),
@@ -92,12 +76,35 @@ function FloatingDot({
   );
 }
 
-function MailBadge({ filledCount, codeLength }: { filledCount: number; codeLength: number }) {
+type BadgeIcon = "mail" | "lock" | "shield";
+
+function StatusBadge({
+  filledCount,
+  codeLength,
+  icon,
+  hasError,
+}: {
+  filledCount: number;
+  codeLength: number;
+  icon: BadgeIcon;
+  hasError: boolean;
+}) {
   const bounce = useSharedValue(1);
   const rotate = useSharedValue(0);
   const progress = filledCount / codeLength;
 
   useEffect(() => {
+    if (hasError) {
+      rotate.value = withSequence(
+        withTiming(-10, { duration: 60 }),
+        withTiming(10, { duration: 60 }),
+        withTiming(-8, { duration: 60 }),
+        withTiming(8, { duration: 60 }),
+        withTiming(0, { duration: 60 }),
+      );
+      return;
+    }
+
     bounce.value = withSequence(
       withSpring(1.12, { damping: 8, stiffness: 220 }),
       withSpring(1, { damping: 12, stiffness: 180 }),
@@ -107,11 +114,14 @@ function MailBadge({ filledCount, codeLength }: { filledCount: number; codeLengt
       withTiming(6, { duration: 90 }),
       withTiming(0, { duration: 90 }),
     );
-  }, [bounce, filledCount, rotate]);
+  }, [bounce, filledCount, hasError, rotate]);
 
   const badgeStyle = useAnimatedStyle(() => ({
     transform: [{ scale: bounce.value }, { rotate: `${rotate.value}deg` }],
   }));
+
+  const badgeColor = hasError ? TALLY.red : TALLY.primary;
+  const badgeBg = hasError ? "#FCEFE4" : TALLY.primaryLight;
 
   return (
     <Animated.View entering={FadeInDown.springify().damping(14)}>
@@ -121,23 +131,25 @@ function MailBadge({ filledCount, codeLength }: { filledCount: number; codeLengt
       >
         <View
           className="absolute inset-0 rounded-[28px]"
-          style={{ backgroundColor: TALLY.primaryLight }}
+          style={{ backgroundColor: badgeBg }}
         />
-        <View
-          className="absolute bottom-0 left-0 right-0 overflow-hidden rounded-b-[28px]"
-          style={{ height: 80 }}
-        >
+        {!hasError ? (
           <View
-            className="absolute bottom-0 left-0 right-0"
-            style={{
-              height: Math.max(14, progress * 80),
-              backgroundColor: TALLY.primary,
-              opacity: 0.22,
-            }}
-          />
-        </View>
-        <Feather name="mail" size={32} color={TALLY.primary} />
-        {filledCount === codeLength ? (
+            className="absolute bottom-0 left-0 right-0 overflow-hidden rounded-b-[28px]"
+            style={{ height: 80 }}
+          >
+            <View
+              className="absolute bottom-0 left-0 right-0"
+              style={{
+                height: Math.max(14, progress * 80),
+                backgroundColor: TALLY.primary,
+                opacity: 0.22,
+              }}
+            />
+          </View>
+        ) : null}
+        <Feather name={icon} size={32} color={badgeColor} />
+        {filledCount === codeLength && !hasError ? (
           <View
             className="absolute -right-1 -top-1 h-7 w-7 items-center justify-center rounded-full"
             style={{ backgroundColor: TALLY.green }}
@@ -150,26 +162,59 @@ function MailBadge({ filledCount, codeLength }: { filledCount: number; codeLengt
   );
 }
 
-export function VerifyCodeHeader({
-  email,
+export type PinCodeHeaderProps = {
+  filledCount: number;
+  codeLength: number;
+  title: string;
+  completeTitle?: string;
+  subtitle: string;
+  hints: string[];
+  icon?: BadgeIcon;
+  showBack?: boolean;
+  hasError?: boolean;
+  errorMessage?: string;
+};
+
+export function PinCodeHeader({
   filledCount,
   codeLength,
-}: VerifyCodeHeaderProps) {
-  const hintIndex = Math.min(filledCount, HINTS.length - 1);
-  const hint = HINTS[hintIndex];
+  title,
+  completeTitle,
+  subtitle,
+  hints,
+  icon = "mail",
+  showBack = true,
+  hasError = false,
+  errorMessage = "That code doesn't match. Try again.",
+}: PinCodeHeaderProps) {
+  const hintIndex = Math.min(filledCount, hints.length - 1);
+  const hint = hints[hintIndex] ?? hints[hints.length - 1];
+  const heading =
+    !hasError && filledCount === codeLength && completeTitle
+      ? completeTitle
+      : title;
 
   return (
     <View className="gap-5">
       <View className="flex-row items-center justify-between">
-        <IconButton
-          icon={<Feather name="arrow-left" size={20} color="#000000" />}
-          onPress={() => router.back()}
-        />
+        {showBack ? (
+          <IconButton
+            icon={<Feather name="arrow-left" size={20} color="#000000" />}
+            onPress={() => router.back()}
+          />
+        ) : (
+          <View className="h-11 w-11" />
+        )}
         <View
           className="rounded-full px-3 py-1.5"
-          style={{ backgroundColor: TALLY.primaryLight }}
+          style={{
+            backgroundColor: hasError ? "#FCEFE4" : TALLY.primaryLight,
+          }}
         >
-          <Text className="text-xs font-semibold" style={{ color: TALLY.primary }}>
+          <Text
+            className="text-xs font-semibold"
+            style={{ color: hasError ? "#C47A3A" : TALLY.primary }}
+          >
             {filledCount}/{codeLength}
           </Text>
         </View>
@@ -181,27 +226,30 @@ export function VerifyCodeHeader({
           <FloatingDot delay={120} left={118} top={12} size={8} color="#F5D0D8" />
           <FloatingDot delay={240} left={14} top={78} size={7} color="#B8D4F0" />
           <FloatingDot delay={180} left={112} top={72} size={9} color="#F5E6A3" />
-          <MailBadge filledCount={filledCount} codeLength={codeLength} />
+          <StatusBadge
+            filledCount={filledCount}
+            codeLength={codeLength}
+            icon={icon}
+            hasError={hasError}
+          />
         </View>
 
         <Animated.View
-          key={hintIndex}
+          key={`${hintIndex}-${hasError ? "err" : "ok"}`}
           entering={FadeInDown.duration(220)}
           className="items-center gap-2"
         >
           <Text className="text-center text-3xl font-bold text-tally-text">
-            {filledCount === codeLength ? "Code locked in" : "Got a secret code?"}
+            {hasError ? "Oops, try again" : heading}
           </Text>
-          <Text className="text-center text-base text-tally-textSecondary px-2">
-            {email
-              ? `Sent to ${email}`
-              : "Sent to your email"}
+          <Text className="px-2 text-center text-base text-tally-textSecondary">
+            {subtitle}
           </Text>
           <Text
             className="text-center text-sm font-medium"
-            style={{ color: TALLY.primary }}
+            style={{ color: hasError ? "#C47A3A" : TALLY.primary }}
           >
-            {hint}
+            {hasError ? errorMessage : hint}
           </Text>
         </Animated.View>
       </View>

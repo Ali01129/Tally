@@ -25,8 +25,11 @@ const FILLED_COLORS = [
   "#785DC3",
 ];
 
+const ERROR_COLOR = "#EAB180";
+
 type CodeBoxesProps = {
   code: string;
+  hasError?: boolean;
 };
 
 function CodeBox({
@@ -34,11 +37,13 @@ function CodeBox({
   index,
   isFilled,
   isActive,
+  hasError,
 }: {
   digit: string;
   index: number;
   isFilled: boolean;
   isActive: boolean;
+  hasError: boolean;
 }) {
   const scale = useSharedValue(1);
   const digitPop = useSharedValue(0);
@@ -58,7 +63,7 @@ function CodeBox({
   }, [digitPop, isFilled, scale]);
 
   useEffect(() => {
-    if (isActive) {
+    if (isActive && !hasError) {
       activePulse.value = withRepeat(
         withSequence(
           withTiming(1, { duration: 500 }),
@@ -70,30 +75,34 @@ function CodeBox({
     } else {
       activePulse.value = withTiming(0, { duration: 150 });
     }
-  }, [activePulse, isActive]);
+  }, [activePulse, hasError, isActive]);
 
   const boxStyle = useAnimatedStyle(() => {
-    const borderColor = isFilled
-      ? FILLED_COLORS[index]
-      : interpolateColor(
-          activePulse.value,
-          [0, 1],
-          [TALLY.groupCircles, TALLY.primary],
-        );
+    const borderColor = hasError
+      ? ERROR_COLOR
+      : isFilled
+        ? FILLED_COLORS[index]
+        : interpolateColor(
+            activePulse.value,
+            [0, 1],
+            [TALLY.groupCircles, TALLY.primary],
+          );
 
     return {
       transform: [{ scale: scale.value }],
       borderColor,
-      backgroundColor: isFilled
-        ? FILLED_COLORS[index]
-        : isActive
-          ? TALLY.primaryLight
-          : "#FFFFFF",
-      shadowOpacity: isFilled ? 0.18 : isActive ? 0.1 : 0,
+      backgroundColor: hasError
+        ? "#FCEFE4"
+        : isFilled
+          ? FILLED_COLORS[index]
+          : isActive
+            ? TALLY.primaryLight
+            : "#FFFFFF",
+      shadowOpacity: isFilled && !hasError ? 0.18 : isActive ? 0.1 : 0,
       shadowRadius: isFilled ? 8 : 4,
       shadowOffset: { width: 0, height: 4 },
-      elevation: isFilled ? 3 : 0,
-      shadowColor: FILLED_COLORS[index],
+      elevation: isFilled && !hasError ? 3 : 0,
+      shadowColor: hasError ? ERROR_COLOR : FILLED_COLORS[index],
     };
   });
 
@@ -114,12 +123,18 @@ function CodeBox({
         <Animated.View style={digitStyle}>
           <Text
             className="text-2xl font-bold"
-            style={{ color: index >= 3 ? "#FFFFFF" : TALLY.text }}
+            style={{
+              color: hasError
+                ? "#C47A3A"
+                : index >= 3
+                  ? "#FFFFFF"
+                  : TALLY.text,
+            }}
           >
             {digit}
           </Text>
         </Animated.View>
-      ) : isActive ? (
+      ) : isActive && !hasError ? (
         <Animated.View entering={FadeIn.duration(200)}>
           <View
             className="h-5 w-1 rounded-full"
@@ -131,12 +146,37 @@ function CodeBox({
   );
 }
 
-export function CodeBoxes({ code }: CodeBoxesProps) {
+export function CodeBoxes({ code, hasError = false }: CodeBoxesProps) {
   const digits = code.padEnd(CODE_LENGTH, " ").slice(0, CODE_LENGTH).split("");
+  const shake = useSharedValue(0);
+
+  useEffect(() => {
+    if (!hasError) {
+      shake.value = 0;
+      return;
+    }
+
+    shake.value = withSequence(
+      withTiming(-12, { duration: 50 }),
+      withTiming(12, { duration: 50 }),
+      withTiming(-10, { duration: 50 }),
+      withTiming(10, { duration: 50 }),
+      withTiming(-6, { duration: 50 }),
+      withTiming(6, { duration: 50 }),
+      withTiming(0, { duration: 50 }),
+    );
+  }, [hasError, shake]);
+
+  const rowStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: shake.value }],
+  }));
 
   return (
     <View className="gap-3">
-      <View className="flex-row justify-between gap-2.5">
+      <Animated.View
+        className="flex-row justify-between gap-2.5"
+        style={rowStyle}
+      >
         {digits.map((digit, index) => (
           <CodeBox
             key={index}
@@ -144,9 +184,10 @@ export function CodeBoxes({ code }: CodeBoxesProps) {
             index={index}
             isFilled={digit !== " "}
             isActive={index === code.length}
+            hasError={hasError}
           />
         ))}
-      </View>
+      </Animated.View>
 
       <View className="flex-row items-center justify-center gap-1.5">
         {Array.from({ length: CODE_LENGTH }).map((_, index) => {
@@ -157,9 +198,11 @@ export function CodeBoxes({ code }: CodeBoxesProps) {
               className="h-1.5 rounded-full"
               style={{
                 width: filled ? 16 : 6,
-                backgroundColor: filled
-                  ? FILLED_COLORS[index]
-                  : TALLY.groupCircles,
+                backgroundColor: hasError
+                  ? ERROR_COLOR
+                  : filled
+                    ? FILLED_COLORS[index]
+                    : TALLY.groupCircles,
               }}
             />
           );

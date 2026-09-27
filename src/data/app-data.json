@@ -1,4 +1,6 @@
 {
+  "new_user": true,
+  "passcode": null,
   "user": {
     "name": "Maya Chen",
     "displayName": "Maya",
